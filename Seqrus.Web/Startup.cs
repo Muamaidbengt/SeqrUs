@@ -35,9 +35,12 @@ namespace Seqrus.Web
         {
             ApplicationConfigurator.ConfigureContentSecurityPolicy(app);
             ApplicationConfigurator.ConfigureOriginHeaders(app);
+            ApplicationConfigurator.ConfigureTransportSecurityHeaders(app);
             ApplicationConfigurator.ConfigureErrorHandling(app);
 
             app.UseStaticFiles();
+
+            ApplicationConfigurator.ConfigureCachingHeaders(app);
 
             app.UseMvc(routes =>
             {
