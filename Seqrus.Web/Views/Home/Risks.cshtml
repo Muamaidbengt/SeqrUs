@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNetCore.Html
+@using Microsoft.AspNetCore.Http
+@model Seqrus.Web.Helpers.ComplianceSettings
+@{
+    ViewData["Title"] = "Risks";
+}
+
+@functions
+{
+
+    public HtmlString BadgeFor(bool? thing)
+    {
+        switch (thing)
+        {
+            case null:
+                return new HtmlString(@"<span class=""label label-default"">Not implemented</span>");
+            case true:
+                return new HtmlString(@"<span class=""label label-danger"">Exposed</span>");
+            default:
+                return new HtmlString(@"<span class=""label label-success"">Not exposed</span>");
+        }
+    }
+
+
+}
+<h1>Risks</h1>
+
+<h2>A1:2017 - Injection @BadgeFor(null)</h2>
+<h2>A2:2017 - Broken Authentication and Session Management @BadgeFor(null)</h2>
+<h2>A3:2017 - Sensitive Data Exposure @BadgeFor(Model.SensitiveDataExposure)</h2>
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the Strict-Transport-Security response header</div>
+        <div class="panel-body">
+            Use the developer tools of your browser to inspect the HTTP response headers when making any request to this site.
+            <ul>
+                <li>If @BadgeFor(true), the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
+                <li>If @BadgeFor(false), the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the Cache-Control response header</div>
+        <div class="panel-body">
+            Use the developer tools of your browser to inspect the HTTP response headers when <a asp-controller="Home" asp-action="Secrets">viewing sensitive information on this site</a>.
+            <ul>
+                <li>If @BadgeFor(true), the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
+                <li>If @BadgeFor(false), the <code>Cache-Control</code> header will be present and configured in a way that instructs proxies and browsers to not store or use cached responses.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
+        <div class="panel-body">
+            <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), 30892))">Click here to attempt to view sensitive secrets over an unencrypted connection</a>.
+            <ul>
+                <li>If @BadgeFor(true), sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
+                <li>If @BadgeFor(false), the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
+            </ul>
+            <div class="alert alert-warning">NOTE: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should clear any previous HSTS settings from your browser</a>.</div>
+        </div>
+    </div>
+</div>
+<h2>A4:2017 - XML External Entity (XXE) @BadgeFor(null)</h2>
+<h2>A5:2017 - Broken Access Control @BadgeFor(null)</h2>
+<h2>A6:2017 - Security Misconfiguration @BadgeFor(Model.SecurityMisconfiguration)</h2>
+
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
+        <div class="panel-body">
+            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+            <ul>
+                <li>If @BadgeFor(true), sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
+                <li>If @BadgeFor(false), the <code>Server</code> header will not be present at all in the response.</li>
+            </ul>
+            <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment.</div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
+        <div class="panel-body">
+            <a asp-action="FailDatabaseConnection">Click here to attempt to connect to the database (and fail miserably, resulting in an error message)</a>.
+            <ul>
+                <li>If @BadgeFor(true), sensitive data (a connection string including database credentials) will leak through the error message.</li>
+                <li>If @BadgeFor(false), a generic error message will be shown without any sensitive information.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<h2>A7:2017 - Cross-Site Scripting (XSS) @BadgeFor(Model.CrossSiteScripting)</h2>
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the Content-Security-Policy response header</div>
+        <div class="panel-body">
+            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+            <ul>
+                <li>If @BadgeFor(true), no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
+                <li>If @BadgeFor(false), the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust only the sources required by this site (i.e. white-listing).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the X-Frame-Options response header</div>
+        <div class="panel-body">
+            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+            <ul>
+                <li>If @BadgeFor(true), no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on loading the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                <li>If @BadgeFor(false), the <code>X-Frame-Options</code> header will be present and configured to prevent the client from site from loading the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h2>A8:2017 - Insecure Deserialization @BadgeFor(null)</h2>
+<h2>A9:2017 - Using Components With Known Vulnerabilities @BadgeFor(null)</h2>
+<h2>A10:2017 - Insufficient Logging and Monitoring @BadgeFor(null)</h2>

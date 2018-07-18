@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Net;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Net.Http.Headers;
 
 namespace Seqrus.Web.Helpers
@@ -54,6 +57,38 @@ namespace Seqrus.Web.Helpers
                 context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
                 return next();
             });
+
+            // With ASP.NET Core 2.1 or greater you can instead do
+            //app.UseHsts()
+        }
+
+        public static void ConfigureHttpsRedirection(IApplicationBuilder app, int? port)
+        {
+            if (Settings.SensitiveDataExposure)
+                return; // ASP.Net is non-compliant by default. You should always encrypt data in transit (i.e. use HTTPS).
+
+            app.Use((context, next) =>
+            {
+                if (context.Request.IsHttps || !port.HasValue)
+                    return next();
+
+                var host = context.Request.Host;
+                host = new HostString(host.Host, port.Value);
+
+                var request = context.Request;
+                var redirectUrl = UriHelper.BuildAbsolute("https",
+                    host,
+                    request.PathBase,
+                    request.Path,
+                    request.QueryString);
+                
+                context.Response.StatusCode = (int) HttpStatusCode.TemporaryRedirect;
+                context.Response.Headers[HeaderNames.Location] = redirectUrl;
+                return Task.CompletedTask;
+            });
+
+            // With ASP.NET Core 2.1 or greater you can instead do
+            //app.UseHttpsRedirection()
         }
 
         public static void ConfigureCachingHeaders(IApplicationBuilder app)
@@ -67,9 +102,12 @@ namespace Seqrus.Web.Helpers
                 headers.CacheControl = new CacheControlHeaderValue()
                 {
                     NoCache = true,
-                    NoStore = true
+                    NoStore = true,
+                    MustRevalidate = true
                 };
-                headers.Headers["Pragma"] = "no-cache";
+                
+                // Note that for backwards compatibility with HTTP1.0 clients you will probably want to add the Pragma header instead/as well.
+                // headers.Headers["Pragma"] = "no-cache"
                 return next();
             });
         }
@@ -83,7 +121,10 @@ namespace Seqrus.Web.Helpers
             {
                 // Adjust as needed for your app
                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'");
+                const string csp = "default-src 'self' https://maxcdn.bootstrapcdn.com https://code.jquery.com;";
+
+                // Note that you could also use a <meta>-tag to specify the policy
+                context.Response.Headers.Add("Content-Security-Policy", csp);
                 context.Response.Headers.Add("X-Frame-Options", "DENY");
                 return next();
             });

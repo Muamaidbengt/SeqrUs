@@ -1,0 +1,47 @@
+﻿.seq-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.seq-test {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 45px 15px 15px;
+    margin: 0 -15px 15px;
+    box-shadow: inset 0 3px 6px rgba(0,0,0,.05);
+}
+
+@media (min-width: 768px) {
+    .seq-test {
+        margin-left: 0;
+        margin-right: 0;
+        box-shadow: none;
+        border-color: #e5e5e5;
+    }
+}
+
+
+.seq-test:after {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #959595;
+    content: "How to test";
+}
+
+.seq-test-list {
+    list-style: none;
+}
+
+.seq-test-list > li {
+    margin-bottom: 20px;
+    list-style-type: lower-alpha;
+}

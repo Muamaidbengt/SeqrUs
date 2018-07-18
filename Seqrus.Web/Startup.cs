@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Seqrus.Web.Helpers;
@@ -9,6 +12,7 @@ namespace Seqrus.Web
     public class Startup
     {
         public IConfiguration Configuration { get; }
+        private ComplianceSettings _complianceLevel;
 
         public Startup(IHostingEnvironment env)
         {
@@ -17,10 +21,10 @@ namespace Seqrus.Web
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             Configuration = builder.Build();
-            var complianceLevel = Configuration
+            _complianceLevel = Configuration
                 .GetSection(nameof(ComplianceSettings))
                 .Get<ComplianceSettings>();
-            ApplicationConfigurator.Use(complianceLevel);
+            ApplicationConfigurator.Use(_complianceLevel);
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -28,6 +32,7 @@ namespace Seqrus.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton(_complianceLevel);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +42,7 @@ namespace Seqrus.Web
             ApplicationConfigurator.ConfigureOriginHeaders(app);
             ApplicationConfigurator.ConfigureTransportSecurityHeaders(app);
             ApplicationConfigurator.ConfigureErrorHandling(app);
+            ApplicationConfigurator.ConfigureHttpsRedirection(app, 44395);
 
             app.UseStaticFiles();
 
@@ -46,6 +52,21 @@ namespace Seqrus.Web
             {
                 routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private int? GetHttpsPort(IServerAddressesFeature serverAddressesFeature)
+        {
+            foreach (var address in serverAddressesFeature.Addresses)
+            {
+                var serverAddress = ServerAddress.FromUrl(address);
+
+                if (serverAddress.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
+                {
+                    return serverAddress.Port;
+                }
+            }
+
+            return null;
         }
     }
 }
