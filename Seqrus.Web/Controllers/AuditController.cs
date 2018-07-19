@@ -4,17 +4,17 @@ using Seqrus.Web.Services;
 
 namespace Seqrus.Web.Controllers
 {
-    public class LogController : Controller
+    public class AuditController : Controller
     {
         private readonly ILoggingService _logger;
 
-        public LogController(ILoggingService logger)
+        public AuditController(ILoggingService logger)
         {
             _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Logs()
         {
             var logs = _logger.Logs.ToList();
 

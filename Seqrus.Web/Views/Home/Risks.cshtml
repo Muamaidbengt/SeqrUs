@@ -130,7 +130,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Check the logs for failed login attempts</div>
         <div class="panel-body">
-            Attempt to <a asp-controller="User" asp-action="Index">login to the site</a> using invalid credentials, then <a asp-controller="Log" asp-action="Index">check the logs for failed attempts</a>.
+            Attempt to <a asp-controller="User" asp-action="Index">login to the site</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
             <ul>
                 <li>If @BadgeFor(true), the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
                 <li>If @BadgeFor(false), the logs contain details about the failed login attempt.</li>
