@@ -1,9 +1,13 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Net.Http.Headers;
+using Seqrus.Web.Services;
 
 namespace Seqrus.Web.Helpers
 {
@@ -81,7 +85,7 @@ namespace Seqrus.Web.Helpers
                     request.PathBase,
                     request.Path,
                     request.QueryString);
-                
+
                 context.Response.StatusCode = (int) HttpStatusCode.TemporaryRedirect;
                 context.Response.Headers[HeaderNames.Location] = redirectUrl;
                 return Task.CompletedTask;
@@ -105,7 +109,7 @@ namespace Seqrus.Web.Helpers
                     NoStore = true,
                     MustRevalidate = true
                 };
-                
+
                 // Note that for backwards compatibility with HTTP1.0 clients you will probably want to add the Pragma header instead/as well.
                 // headers.Headers["Pragma"] = "no-cache"
                 return next();
@@ -127,6 +131,32 @@ namespace Seqrus.Web.Helpers
                 context.Response.Headers.Add("Content-Security-Policy", csp);
                 context.Response.Headers.Add("X-Frame-Options", "DENY");
                 return next();
+            });
+        }
+
+        public static void AddAuthentication(IServiceCollection services)
+        {
+            services.AddScoped<StaticAuthenticator>();
+
+            services.AddScoped(provider =>
+            {
+                Func<IAuthenticationService> getAuthenticator = provider.GetService<StaticAuthenticator>;
+
+                if (!Settings.InsufficientLoggingAndMonitoring)
+                {
+                    // Decorate authenticator with a logger
+                    var notLoggingAuth = getAuthenticator;
+                    getAuthenticator = () =>
+                        new LoggingAuthenticator(provider.GetService<ILoggingService>(), notLoggingAuth());
+                }
+
+                if (!Settings.SecurityMisconfiguration)
+                {
+                    // Decorate the authenticator to strip unneccessary details from error messages
+                    var helpfulAuth = getAuthenticator;
+                    getAuthenticator = () => new UnhelpfulAuthenticator(helpfulAuth());
+                }
+                return getAuthenticator();
             });
         }
     }

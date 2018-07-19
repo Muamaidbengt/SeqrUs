@@ -1,0 +1,27 @@
+﻿@using Seqrus.Web.ViewModels
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<form asp-action="Login" style="max-width: 500px;">
+    <div class="form-group">
+        <label for="@nameof(Model.Username)">Username</label>
+        <input type="text" class="form-control" id="@nameof(Model.Username)" name="@nameof(Model.Username)" placeholder="Username" value="@Model.Username" />
+    </div>
+    <div class="form-group">
+        <label for="@nameof(Model.Password)">Password</label>
+        <input type="password" class="form-control" id="@nameof(Model.Password)" name="@nameof(Model.Password)" placeholder="Password" />
+    </div>
+
+    <button type="submit" class="btn btn-default">Log in</button>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Message))
+    {
+        <div class="alert alert-danger alert-dismissable" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            @Model.Message
+        </div>
+    }
+</form>

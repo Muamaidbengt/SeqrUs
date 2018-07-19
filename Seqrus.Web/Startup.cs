@@ -1,18 +1,16 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Seqrus.Web.Helpers;
+using Seqrus.Web.Services;
 
 namespace Seqrus.Web
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        private ComplianceSettings _complianceLevel;
+        private readonly ComplianceSettings _complianceLevel;
 
         public Startup(IHostingEnvironment env)
         {
@@ -27,15 +25,14 @@ namespace Seqrus.Web
             ApplicationConfigurator.Use(_complianceLevel);
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddSingleton(_complianceLevel);
+            services.AddSingleton<ILoggingService>(new InMemoryLogger());
+            ApplicationConfigurator.AddAuthentication(services);
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             ApplicationConfigurator.ConfigureContentSecurityPolicy(app);
@@ -52,21 +49,8 @@ namespace Seqrus.Web
             {
                 routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
 
-        private int? GetHttpsPort(IServerAddressesFeature serverAddressesFeature)
-        {
-            foreach (var address in serverAddressesFeature.Addresses)
-            {
-                var serverAddress = ServerAddress.FromUrl(address);
-
-                if (serverAddress.Scheme.Equals("https", StringComparison.OrdinalIgnoreCase))
-                {
-                    return serverAddress.Port;
-                }
-            }
-
-            return null;
+            app.ApplicationServices.GetService<ILoggingService>().ApplicationStarted();
         }
     }
 }
