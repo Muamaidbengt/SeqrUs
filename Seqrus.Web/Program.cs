@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Seqrus.Web
 {
@@ -13,6 +16,11 @@ namespace Seqrus.Web
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .UseKestrel()
+                .ConfigureServices((context, services) =>
+                {
+                    services.Configure<KestrelServerOptions>(opts => opts.AddServerHeader = context.Configuration.GetValue<bool>("ComplianceSettings:SecurityMisconfiguration"));
+                })
                 .Build();
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Services;
 
@@ -32,8 +31,14 @@ namespace Seqrus.Web.Helpers
                 // e.g.
                 // WebHostBuilder.UseStartup<Startup>()
                 // .UseKestrel(options => options.AddServerHeader = false)
-
-                context.Response.Headers.Remove("Server");
+                //
+                // or if using IIS and its RequestFiltering module, by altering the web.config:
+                // <configuration>
+                //   <system.webServer>
+                //     <security>
+                //        <requestFiltering removeServerHeader="true" />
+                
+                context.Response.Headers.Remove(HeaderNames.Server);
                 return next();
             });
         }

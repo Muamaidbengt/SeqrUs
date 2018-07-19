@@ -59,7 +59,7 @@
                 <li>If @BadgeFor(true), sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
                 <li>If @BadgeFor(false), the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
             </ul>
-            <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should clear any previous HSTS settings from your browser</a>.</div>
+            <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
         </div>
     </div>
 </div>
@@ -76,7 +76,7 @@
                 <li>If @BadgeFor(true), sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
                 <li>If @BadgeFor(false), the <code>Server</code> header will not be present at all in the response.</li>
             </ul>
-            <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment.</div>
+            <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment that can be of use to an attacker.</div>
         </div>
     </div>
     <div class="panel panel-default">
