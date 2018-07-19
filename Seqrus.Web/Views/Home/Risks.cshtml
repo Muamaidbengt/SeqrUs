@@ -1,10 +1,6 @@
-﻿@using Microsoft.AspNetCore.Hosting.Server
-@using Microsoft.AspNetCore.Hosting.Server.Features
-@using Microsoft.AspNetCore.Html
+﻿@using Microsoft.AspNetCore.Html
 @using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Server.Kestrel.Core
 @using Microsoft.Extensions.Configuration
-@using Microsoft.Extensions.Hosting
 @inject IConfiguration Config
 @model Seqrus.Web.Helpers.ComplianceSettings
 @{
@@ -122,8 +118,19 @@
         <div class="panel-body">
             Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
             <ul>
-                <li>If @BadgeFor(true), no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on loading the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-                <li>If @BadgeFor(false), the <code>X-Frame-Options</code> header will be present and configured to prevent the client from site from loading the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                <li>If @BadgeFor(true), no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                <li>If @BadgeFor(false), the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Check if the site loads in an iframe on a different domain</div>
+        <div class="panel-body">
+            Download <a asp-controller="Home" asp-action="IframeTest">this test page</a> to your device and then open it.
+            <ul>
+                <li>If @BadgeFor(true), this site will open inside an <code>iframe</code>.</li>
+                <li>If @BadgeFor(false), the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
             </ul>
         </div>
     </div>

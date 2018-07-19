@@ -1,0 +1,16 @@
+﻿@model string
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>IFrame test page</title>
+</head>
+<body style="background-color:mediumseagreen">
+<div>
+    <p>Attempting to load @Model in the frame below. If nothing is showing up, 
+        it is an indication that the <code>X-Frame-Options</code> header has preventing your browser from loading it.</p>
+    <iframe src="@Model" style="height: 768px; width: 1024px;"></iframe>
+</div>
+</body>
+</html>

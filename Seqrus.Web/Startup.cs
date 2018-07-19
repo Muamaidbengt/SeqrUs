@@ -30,7 +30,8 @@ namespace Seqrus.Web
         {
             services.AddMvc();
             services.AddSingleton(_complianceLevel);
-            services.AddSingleton<ILoggingService>(new InMemoryLogger());
+            services.AddSingleton<ILoggingService, InMemoryLogger>();
+            services.AddScoped<IViewRenderService, ViewRenderService>();
             ApplicationConfigurator.AddAuthentication(services);
         }
 
@@ -40,7 +41,7 @@ namespace Seqrus.Web
             ApplicationConfigurator.ConfigureOriginHeaders(app);
             ApplicationConfigurator.ConfigureTransportSecurityHeaders(app);
             ApplicationConfigurator.ConfigureErrorHandling(app);
-            ApplicationConfigurator.ConfigureHttpsRedirection(app, 44395);
+            ApplicationConfigurator.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));
 
             app.UseStaticFiles();
 
