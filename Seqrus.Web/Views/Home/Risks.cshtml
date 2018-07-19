@@ -1,5 +1,11 @@
-﻿@using Microsoft.AspNetCore.Html
+﻿@using Microsoft.AspNetCore.Hosting.Server
+@using Microsoft.AspNetCore.Hosting.Server.Features
+@using Microsoft.AspNetCore.Html
 @using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Server.Kestrel.Core
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Hosting
+@inject IConfiguration Config
 @model Seqrus.Web.Helpers.ComplianceSettings
 @{
     ViewData["Title"] = "Risks";
@@ -52,7 +58,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
         <div class="panel-body">
-            <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), 30892))">Click here to attempt to view sensitive secrets over an unencrypted (HTTP) connection</a>.
+            <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), Config.GetValue<int>("Bindings:http")))">Click here to attempt to view sensitive secrets over an unencrypted (HTTP) connection</a>.
             <ul>
                 <li>If @BadgeFor(true), sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
                 <li>If @BadgeFor(false), the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
