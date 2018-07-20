@@ -27,6 +27,33 @@ namespace Seqrus.Web.Services
             _serviceProvider = serviceProvider;
         }
 
+        public string RenderToString<TModel>(string viewPath, TModel model)
+        {
+            var viewEngineResult = _razorViewEngine.GetView("~/", viewPath, false);
+
+            if (!viewEngineResult.Success)
+            {
+                throw new ViewNotFoundException($"Couldn't find view {viewPath}");
+            }
+
+            var view = viewEngineResult.View;
+
+            using (var sw = new StringWriter())
+            {
+                var viewContext = new ViewContext()
+                {
+                    HttpContext =
+                        new DefaultHttpContext { RequestServices = _serviceProvider },
+                    ViewData = new ViewDataDictionary<TModel>(new EmptyModelMetadataProvider(),
+                            new ModelStateDictionary())
+                        { Model = model },
+                    Writer = sw
+                };
+                view.RenderAsync(viewContext).GetAwaiter().GetResult();
+                return sw.ToString();
+            }
+        }
+
         public async Task<string> RenderToStringAsync(string viewName, object model)
         {
             var httpContext = new DefaultHttpContext {RequestServices = _serviceProvider};
@@ -34,13 +61,10 @@ namespace Seqrus.Web.Services
 
             using (var sw = new StringWriter())
             {
-                
                 var viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
 
                 if (viewResult.View == null)
-                {
-                    throw new ArgumentNullException($"{viewName} does not match any available view");
-                }
+                    throw new ViewNotFoundException($"{viewName} does not match any available view");
 
                 var viewDictionary =
                     new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())

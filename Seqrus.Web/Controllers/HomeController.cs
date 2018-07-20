@@ -58,7 +58,7 @@ namespace Seqrus.Web.Controllers
                 request.Path.Value.ToLowerInvariant().Replace(nameof(IframeTest).ToLowerInvariant(), nameof(Iframe)),
                 request.QueryString);
 
-            var iframeTestMarkup = _viewRenderService.RenderToStringAsync("Home/IframeTest", framedContent).Result;
+            var iframeTestMarkup = _viewRenderService.RenderToString("~/Views/Home/IframeTest.cshtml", framedContent);
 
             var bytes = Encoding.UTF8.GetBytes(iframeTestMarkup);
             stream.Write(bytes, 0, bytes.Length);
