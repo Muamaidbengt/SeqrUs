@@ -1,153 +1,249 @@
-﻿@using Microsoft.AspNetCore.Html
-@using Microsoft.AspNetCore.Http
+﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.Extensions.Configuration
+
 @inject IConfiguration Config
 @model Seqrus.Web.Helpers.ComplianceSettings
 @{
     ViewData["Title"] = "Risks";
 }
 
-@functions
+<div class="row">
+    <div class="col-md-9" role="main">
+        <h1 class="page-header">Risks</h1>
+        <section class="seq-section">
+            <p>Here are some of the OWASP risks that have been addressed in this web application.</p>
+            <p>Legend:</p>
+            <dl class="dl-horizontal">
+                <dt><risk-exposure /></dt>
+                <dd>Means that this risk has not been intentionally addressed in this application.</dd>
+
+                <dt><risk-exposure is-exposed="true"/></dt>
+                <dd>Means that this risk has been addressed in this application, in a way that makes the application intentionally susceptible to the risk.</dd>
+
+                <dt><risk-exposure is-exposed="false"/></dt>
+                <dd>Means that this risk has been addressed in this application, in a way that demonstrably addresses some or all aspects of the risk.</dd>
+            </dl>
+        </section>
+
+        <section id="a1" class="seq-section">
+            <h2 class="page-header">A1:2017 - Injection <risk-exposure /></h2>
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection" />
+        </section>
+
+        <section id="a2" class="seq-section">
+            <h2 class="page-header">A2:2017 - Broken Authentication and Session Management <risk-exposure /></h2>
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication" />
+        </section>
+
+        <section id="a3" class="seq-section">
+            <h2 class="page-header">A3:2017 - Sensitive Data Exposure <risk-exposure is-exposed="Model.SensitiveDataExposure"/></h2>
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure" />
+
+            <div class="seq-test">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the Strict-Transport-Security response header</div>
+                    <div class="panel-body">
+                        Use the developer tools of your browser to inspect the HTTP response headers when making any request to this site.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the Cache-Control response header</div>
+                    <div class="panel-body">
+                        Use the developer tools of your browser to inspect the HTTP response headers when <a asp-controller="Home" asp-action="Secrets">viewing sensitive information on this site</a>.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>Cache-Control</code> header will be present and configured in a way that instructs proxies and browsers to not store or use cached responses.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
+                    <div class="panel-body">
+                        <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace(" https", "http" ), Config.GetValue<int>("Bindings:http")))">Click here to attempt to view sensitive secrets over an unencrypted (HTTP) connection</a>.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
+                        </ul>
+                        <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section id="a4" class="seq-section">
+            <h2 class="page-header">A4:2017 - XML External Entity (XXE) <risk-exposure /></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A4-XML_External_Entities_(XXE)" />
+        </section>
+
+        <section id="a5" class="seq-section">
+            <h2 class="page-header">A5:2017 - Broken Access Control <risk-exposure /></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control" />
+        </section>
+
+        <section id="a6" class="seq-section">
+            <h2 class="page-header">A6:2017 - Security Misconfiguration <risk-exposure is-exposed="Model.SecurityMisconfiguration"/></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration" />
+
+            <div class="seq-test">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
+                    <div class="panel-body">
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>Server</code> header will not be present at all in the response.</li>
+                        </ul>
+                        <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment that can be of use to an attacker.</div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
+                    <div class="panel-body">
+                        <a asp-action="FailDatabaseConnection">Click here to attempt to connect to the database (and fail miserably, resulting in an error message)</a>.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, sensitive data (a connection string including database credentials) will leak through the error message.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, a generic error message will be shown without any sensitive information.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check for unneccessary details in log-in error messages</div>
+                    <div class="panel-body">
+                        <a asp-controller="User" asp-action="Index">Login with the incorrect password for the "admin" user</a> and check the contents of the error message.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, the error message will inform you that the user "admin" exists, providing an attacker with useful information.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, a generic error message will be shown without any sensitive information.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="a7" class="seq-section">
+            <h2 class="page-header">A7:2017 - Cross-Site Scripting (XSS) <risk-exposure is-exposed="Model.CrossSiteScripting"/></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)" />
+
+            <div class="seq-test">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the Content-Security-Policy response header</div>
+                    <div class="panel-body">
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust only the sources required by this site (i.e. white-listing).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the X-Frame-Options response header</div>
+                    <div class="panel-body">
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check if the site loads in an iframe on a different domain</div>
+                    <div class="panel-body">
+                        Download <a asp-controller="Home" asp-action="IframeTest">this test page</a> to your device and then open it.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, this site will open inside an <code>iframe</code>.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
+        <section id="a8" class="seq-section">
+            <h2 class="page-header">A8:2017 - Insecure Deserialization <risk-exposure /></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A8-Insecure_Deserialization" />
+        </section>
+        <section id="a9" class="seq-section">
+            <h2 class="page-header">A9:2017 - Using Components With Known Vulnerabilities <risk-exposure /></h2>
+
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities" />
+        </section>
+        <section id="a10" class="seq-section">
+            <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
+            
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring"/>
+            <div class="seq-test">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Check the logs for failed login attempts</div>
+                    <div class="panel-body">
+                        Attempt to <a asp-controller="User" asp-action="Index">login to the site</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
+                        <ul>
+                            <li>If <risk-exposure is-exposed="true"/>, the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
+                            <li>If <risk-exposure is-exposed="false"/>, the logs contain details about the failed login attempt.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+           
+        </section>
+    </div>
+    <div class="col-md-3" role="complementary">
+        <nav class="hidden-sm hidden-xs seq-sidebar" id="seq-risks-sidebar" data-spy="affix">
+            <ul class="nav">
+                <li>
+                    <a href="#risks">Risks</a>
+                    <ul class="nav">
+                        <li><a href="#a1">A1 - Injection</a></li>
+                        <li><a href="#a2">A2 - Broken Authentication and Session Management</a></li>
+                        <li><a href="#a3">A3 - Sensitive Data Exposure </a></li>
+                        <li><a href="#a4">A4 - XML External Entity (XXE)</a></li>
+                        <li><a href="#a5">A5 - Broken Access Control</a></li>
+                        <li><a href="#a6">A6 - Security Misconfiguration</a></li>
+                        <li><a href="#a7">A7 - Cross-Site Scripting (XSS)</a></li>
+                        <li><a href="#a8">A8 - Insecure Deserialization</a></li>
+                        <li><a href="#a9">A9 - Using Components With Known Vulnerabilities</a></li>
+                        <li><a href="#a10">A10 - Insufficient Logging and Monitoring</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section scripts
 {
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("body").scrollspy({ target: "#seq-risks-sidebar" });
 
-    public HtmlString BadgeFor(bool? thing)
-    {
-        switch (thing)
-        {
-            case null:
-                return new HtmlString(@"<span class=""label label-default"">Not implemented</span>");
-            case true:
-                return new HtmlString(@"<span class=""label label-danger"">Exposed</span>");
-            default:
-                return new HtmlString(@"<span class=""label label-success"">Not exposed</span>");
-        }
-    }
-
-
+        var bar = $("#seq-risks-sidebar");
+        bar.affix({
+            offset: {
+                top: function () {
+                    var c = bar.offset().top,
+                        d = parseInt(bar.children(0).css("margin-top"), 10),
+                        e = $(".navbar").height();
+                    console.log(e);
+                    return this.top = c - e - d;
+                },
+                bottom: function () {
+                    return this.bottom = 0;
+                }
+            }
+        });
+    });
+</script>
 }
-<h1>Risks</h1>
-
-<h2>A1:2017 - Injection @BadgeFor(null)</h2>
-<h2>A2:2017 - Broken Authentication and Session Management @BadgeFor(null)</h2>
-<h2>A3:2017 - Sensitive Data Exposure @BadgeFor(Model.SensitiveDataExposure)</h2>
-<div class="seq-test">
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the Strict-Transport-Security response header</div>
-        <div class="panel-body">
-            Use the developer tools of your browser to inspect the HTTP response headers when making any request to this site.
-            <ul>
-                <li>If @BadgeFor(true), the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
-                <li>If @BadgeFor(false), the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
-            </ul>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the Cache-Control response header</div>
-        <div class="panel-body">
-            Use the developer tools of your browser to inspect the HTTP response headers when <a asp-controller="Home" asp-action="Secrets">viewing sensitive information on this site</a>.
-            <ul>
-                <li>If @BadgeFor(true), the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
-                <li>If @BadgeFor(false), the <code>Cache-Control</code> header will be present and configured in a way that instructs proxies and browsers to not store or use cached responses.</li>
-            </ul>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
-        <div class="panel-body">
-            <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), Config.GetValue<int>("Bindings:http")))">Click here to attempt to view sensitive secrets over an unencrypted (HTTP) connection</a>.
-            <ul>
-                <li>If @BadgeFor(true), sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
-                <li>If @BadgeFor(false), the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
-            </ul>
-            <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
-        </div>
-    </div>
-</div>
-<h2>A4:2017 - XML External Entity (XXE) @BadgeFor(null)</h2>
-<h2>A5:2017 - Broken Access Control @BadgeFor(null)</h2>
-<h2>A6:2017 - Security Misconfiguration @BadgeFor(Model.SecurityMisconfiguration)</h2>
-
-<div class="seq-test">
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
-        <div class="panel-body">
-            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
-            <ul>
-                <li>If @BadgeFor(true), sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
-                <li>If @BadgeFor(false), the <code>Server</code> header will not be present at all in the response.</li>
-            </ul>
-            <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment that can be of use to an attacker.</div>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
-        <div class="panel-body">
-            <a asp-action="FailDatabaseConnection">Click here to attempt to connect to the database (and fail miserably, resulting in an error message)</a>.
-            <ul>
-                <li>If @BadgeFor(true), sensitive data (a connection string including database credentials) will leak through the error message.</li>
-                <li>If @BadgeFor(false), a generic error message will be shown without any sensitive information.</li>
-            </ul>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Check for unneccessary details in log-in error messages</div>
-        <div class="panel-body">
-            <a asp-controller="User" asp-action="Index">Login with the incorrect password for the "admin" user</a> and check the contents of the error message.
-            <ul>
-                <li>If @BadgeFor(true), the error message will inform you that the user "admin" exists, providing an attacker with useful information.</li>
-                <li>If @BadgeFor(false), a generic error message will be shown without any sensitive information.</li>
-            </ul>
-        </div>
-    </div>
-</div>
-<h2>A7:2017 - Cross-Site Scripting (XSS) @BadgeFor(Model.CrossSiteScripting)</h2>
-<div class="seq-test">
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the Content-Security-Policy response header</div>
-        <div class="panel-body">
-            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
-            <ul>
-                <li>If @BadgeFor(true), no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
-                <li>If @BadgeFor(false), the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust only the sources required by this site (i.e. white-listing).</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the X-Frame-Options response header</div>
-        <div class="panel-body">
-            Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
-            <ul>
-                <li>If @BadgeFor(true), no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-                <li>If @BadgeFor(false), the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">Check if the site loads in an iframe on a different domain</div>
-        <div class="panel-body">
-            Download <a asp-controller="Home" asp-action="IframeTest">this test page</a> to your device and then open it.
-            <ul>
-                <li>If @BadgeFor(true), this site will open inside an <code>iframe</code>.</li>
-                <li>If @BadgeFor(false), the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<h2>A8:2017 - Insecure Deserialization @BadgeFor(null)</h2>
-<h2>A9:2017 - Using Components With Known Vulnerabilities @BadgeFor(null)</h2>
-<h2>A10:2017 - Insufficient Logging and Monitoring @BadgeFor(Model.InsufficientLoggingAndMonitoring)</h2>
-<div class="seq-test">
-    <div class="panel panel-default">
-        <div class="panel-heading">Check the logs for failed login attempts</div>
-        <div class="panel-body">
-            Attempt to <a asp-controller="User" asp-action="Index">login to the site</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
-            <ul>
-                <li>If @BadgeFor(true), the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
-                <li>If @BadgeFor(false), the logs contain details about the failed login attempt.</li>
-            </ul>
-        </div>
-    </div>
-</div>

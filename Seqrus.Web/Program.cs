@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Seqrus.Web.Helpers;
 
 namespace Seqrus.Web
 {
@@ -19,7 +20,9 @@ namespace Seqrus.Web
                 .UseKestrel()
                 .ConfigureServices((context, services) =>
                 {
-                    services.Configure<KestrelServerOptions>(opts => opts.AddServerHeader = context.Configuration.GetValue<bool>("ComplianceSettings:SecurityMisconfiguration"));
+                    services.Configure<KestrelServerOptions>(opts => 
+                        opts.AddServerHeader = 
+                        context.Configuration.GetValue<bool>($"{nameof(ComplianceSettings)}:{nameof(ComplianceSettings.SecurityMisconfiguration)}"));
                 })
                 .Build();
     }

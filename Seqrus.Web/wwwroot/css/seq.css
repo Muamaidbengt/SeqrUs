@@ -37,11 +37,54 @@
     content: "How to test";
 }
 
-.seq-test-list {
-    list-style: none;
+.seq-info {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
 }
 
-.seq-test-list > li {
-    margin-bottom: 20px;
-    list-style-type: lower-alpha;
+.seq-section {
+    margin-bottom: 60px;
+}
+
+.seq-login {
+    max-width: 500px;
+}
+
+.seq-sidebar .nav .nav {
+    padding-bottom: 10px;
+}
+
+.seq-sidebar .nav li a {
+    font-size: 13px;
+    color: #767676;
+    padding: 4px 20px;
+}
+
+.seq-sidebar .nav > .active > a {
+    border-left: 2px solid #959595;
+}
+
+.seq-sidebar .nav .nav > li > a {
+    padding-left: 30px;
+    padding-bottom: 1px;
+    font-size: 12px;
+}
+
+.seq-sidebar .nav .nav > .active > a {
+    padding-left: 28px;
+}
+
+@media (min-width: 992px) {
+    #seq-risks-sidebar.affix, #seq-risks-sidebar.affix-bottom {
+        width: 213px;
+    }
+}
+
+@media (min-width: 1200px) {
+    #seq-risks-sidebar.affix, #seq-risks-sidebar.affix-bottom {
+        width: 263px;
+    }
 }
