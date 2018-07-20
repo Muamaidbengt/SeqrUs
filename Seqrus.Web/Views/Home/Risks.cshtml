@@ -38,8 +38,8 @@
         <section id="a3" class="seq-section">
             <h2 class="page-header">A3:2017 - Sensitive Data Exposure <risk-exposure is-exposed="Model.SensitiveDataExposure"/></h2>
             <div class="seq-description">
-                Your data is probably important to you, so you should take adequate measures to protect it (e.g. by encrypting it), both in transit and at rest.
-                Exposure to this risk means that an attacker can gain unauthorized access to your data.
+                <p>Your data is probably important to you, so you should take adequate measures to protect it (e.g. by encrypting it), both in transit and at rest.</p>
+                <p>Exposure to this risk means that an attacker can gain unauthorized access to your data.</p>
                 <read-more href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure" />
             </div>
 
@@ -47,17 +47,17 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the Strict-Transport-Security response header</div>
                     <div class="panel-body">
-                        Use the developer tools of your browser to inspect the HTTP response headers when making any request to this site.
+                        Use the developer tools of your browser to inspect the HTTP response headers when making any request to this application.
                         <ul>
-                            <li>If <risk-exposure is-exposed="true"/>, the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
-                            <li>If <risk-exposure is-exposed="false"/>, the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
+                            <li>If <risk-exposure is-exposed="true" />, the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
+                            <li>If <risk-exposure is-exposed="false" />, the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
                         </ul>
                     </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the Cache-Control response header</div>
                     <div class="panel-body">
-                        Use the developer tools of your browser to inspect the HTTP response headers when <a asp-controller="Home" asp-action="Secrets">viewing sensitive information on this site</a>.
+                        Use the developer tools of your browser to inspect the HTTP response headers when <a asp-controller="Home" asp-action="Secrets">viewing sensitive information on this application</a>.
                         <ul>
                             <li>If <risk-exposure is-exposed="true"/>, the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
                             <li>If <risk-exposure is-exposed="false"/>, the <code>Cache-Control</code> header will be present and configured in a way that instructs proxies and browsers to not store or use cached responses.</li>
@@ -67,12 +67,12 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
                     <div class="panel-body">
+                        <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
                         <a asp-protocol="http" asp-controller="Home" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace(" https", "http" ), Config.GetValue<int>("Bindings:http")))">Click here to attempt to view sensitive secrets over an unencrypted (HTTP) connection</a>.
                         <ul>
                             <li>If <risk-exposure is-exposed="true"/>, sensitive data (information about a client) will be transmitted over an unencrypted connection.</li>
                             <li>If <risk-exposure is-exposed="false"/>, the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a lock icon near the address field in your browser).</li>
                         </ul>
-                        <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
                     </div>
                 </div>
             </div>
@@ -96,8 +96,10 @@
             <h2 class="page-header">A6:2017 - Security Misconfiguration <risk-exposure is-exposed="Model.SecurityMisconfiguration"/></h2>
             
             <div class="seq-description">
-                Exposure to this risk means that an attacker can gain information about the inner workings of your system
-                that can be useful to plan and execute further attacks on it.
+                <p>
+                    Exposure to this risk means that an attacker can gain information about the inner workings of your system
+                    that can be useful to plan and execute further attacks on it.
+                </p>
                 <read-more href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration" />
             </div>
 
@@ -105,7 +107,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
                     <div class="panel-body">
-                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this application.
                         <ul>
                             <li>If <risk-exposure is-exposed="true"/>, sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
                             <li>If <risk-exposure is-exposed="false"/>, the <code>Server</code> header will not be present at all in the response.</li>
@@ -138,6 +140,10 @@
 
         <section id="a7" class="seq-section">
             <h2 class="page-header">A7:2017 - Cross-Site Scripting (XSS) <risk-exposure is-exposed="Model.CrossSiteScripting"/></h2>
+            
+            <div class="seq-description">
+                <p>Exposure to this risk means an attacker may be able to gain unauthorized access to your application.</p>
+            </div>
 
             <read-more href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)" />
 
@@ -145,10 +151,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the Content-Security-Policy response header</div>
                     <div class="panel-body">
-                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this application.
                         <ul>
-                            <li>If <risk-exposure is-exposed="true"/>, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
-                            <li>If <risk-exposure is-exposed="false"/>, the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust only the sources required by this site (i.e. white-listing).</li>
+                            <li>If <risk-exposure is-exposed="true" />, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
+                            <li>If <risk-exposure is-exposed="false" />, the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust <strong>only</strong> the sources required by this application (i.e. white-listing).</li>
                         </ul>
                     </div>
                 </div>
@@ -156,21 +162,21 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the X-Frame-Options response header</div>
                     <div class="panel-body">
-                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this site.
+                        Use the developer tools of your browser to inspect the HTTP response headers of any request to this application.
                         <ul>
-                            <li>If <risk-exposure is-exposed="true"/>, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-                            <li>If <risk-exposure is-exposed="false"/>, the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the site in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                            <li>If <risk-exposure is-exposed="true" />, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                            <li>If <risk-exposure is-exposed="false" />, the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">Check if the site loads in an iframe on a different domain</div>
+                    <div class="panel-heading">Check if the application loads in an iframe on a different domain</div>
                     <div class="panel-body">
                         Download <a asp-controller="Home" asp-action="IframeTest">this test page</a> to your device and then open it.
                         <ul>
-                            <li>If <risk-exposure is-exposed="true"/>, this site will open inside an <code>iframe</code>.</li>
-                            <li>If <risk-exposure is-exposed="false"/>, the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
+                            <li>If <risk-exposure is-exposed="true" />, this application will open inside an <code>iframe</code>.</li>
+                            <li>If <risk-exposure is-exposed="false" />, the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
                         </ul>
                     </div>
                 </div>
@@ -191,14 +197,16 @@
             <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
             
             <div class="seq-description">
-                When (not if) an attack is made on your system, you want to:
-                <ul>
-                    <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                    <li>Monitor the attack patterns to adapt for future attacks</li>
-                    <li>Determine the scope and effects of the attack</li>
-                    <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
-                </ul>
-                Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.
+                <p>
+                    When (not if) an attack is made on your system, you want to:
+                    <ul>
+                        <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
+                        <li>Monitor the attack patterns to adapt for future attacks</li>
+                        <li>Determine the scope and effects of the attack</li>
+                        <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
+                    </ul>
+                </p>
+                <p>Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.</p>
 
                 <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring" />
             </div>
@@ -206,7 +214,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the logs for failed login attempts</div>
                     <div class="panel-body">
-                        Attempt to <a asp-controller="User" asp-action="Index">login to the site</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
+                        Attempt to <a asp-controller="User" asp-action="Index">login to the application</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
                         <ul>
                             <li>If <risk-exposure is-exposed="true"/>, the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
                             <li>If <risk-exposure is-exposed="false"/>, the logs contain details about the failed login attempt.</li>
