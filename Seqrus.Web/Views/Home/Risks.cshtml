@@ -37,7 +37,11 @@
 
         <section id="a3" class="seq-section">
             <h2 class="page-header">A3:2017 - Sensitive Data Exposure <risk-exposure is-exposed="Model.SensitiveDataExposure"/></h2>
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure" />
+            <div class="seq-description">
+                Your data is probably important to you, so you should take adequate measures to protect it (e.g. by encrypting it), both in transit and at rest.
+                Exposure to this risk means that an attacker can gain unauthorized access to your data.
+                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure" />
+            </div>
 
             <div class="seq-test">
                 <div class="panel panel-default">
@@ -90,8 +94,12 @@
 
         <section id="a6" class="seq-section">
             <h2 class="page-header">A6:2017 - Security Misconfiguration <risk-exposure is-exposed="Model.SecurityMisconfiguration"/></h2>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration" />
+            
+            <div class="seq-description">
+                Exposure to this risk means that an attacker can gain information about the inner workings of your system
+                that can be useful to plan and execute further attacks on it.
+                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration" />
+            </div>
 
             <div class="seq-test">
                 <div class="panel panel-default">
@@ -167,8 +175,6 @@
                     </div>
                 </div>
             </div>
-
-
         </section>
 
         <section id="a8" class="seq-section">
@@ -184,7 +190,18 @@
         <section id="a10" class="seq-section">
             <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
             
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring"/>
+            <div class="seq-description">
+                When (not if) an attack is made on your system, you want to:
+                <ul>
+                    <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
+                    <li>Monitor the attack patterns to adapt for future attacks</li>
+                    <li>Determine the scope and effects of the attack</li>
+                    <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
+                </ul>
+                Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.
+
+                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring" />
+            </div>
             <div class="seq-test">
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the logs for failed login attempts</div>

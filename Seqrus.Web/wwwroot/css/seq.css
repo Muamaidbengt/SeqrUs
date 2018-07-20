@@ -6,7 +6,8 @@
     border-radius: 3px;
 }
 
-.seq-test {
+.seq-test,
+.seq-description {
     position: relative;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -16,7 +17,8 @@
 }
 
 @media (min-width: 768px) {
-    .seq-test {
+    .seq-test, 
+    .seq-description {
         margin-left: 0;
         margin-right: 0;
         box-shadow: none;
@@ -25,7 +27,8 @@
 }
 
 
-.seq-test:after {
+.seq-test:after,
+.seq-description:after {
     position: absolute;
     top: 15px;
     left: 15px;
@@ -34,7 +37,14 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #959595;
-    content: "How to test";
+}
+
+.seq-test:after {
+    content: "How do I test it?";
+}
+
+.seq-description:after {
+    content: "Why does it matter?";
 }
 
 .seq-info {

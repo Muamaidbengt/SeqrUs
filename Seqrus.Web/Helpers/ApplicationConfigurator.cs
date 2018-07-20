@@ -130,7 +130,7 @@ namespace Seqrus.Web.Helpers
             {
                 // Adjust as needed for your app
                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-                const string csp = "default-src 'self' https://maxcdn.bootstrapcdn.com https://code.jquery.com;";
+                const string csp = "default-src 'self' https://maxcdn.bootstrapcdn.com https://code.jquery.com https://use.fontawesome.com;";
 
                 // Note that you could also use a <meta>-tag to specify the policy
                 context.Response.Headers.Add("Content-Security-Policy", csp);
