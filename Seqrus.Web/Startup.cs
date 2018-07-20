@@ -18,7 +18,8 @@ namespace Seqrus.Web
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddJsonFile("compliancesettings.json");
+                .AddJsonFile("compliancesettings.json")
+                .AddJsonFile("compliancesettings.runtime.json", optional: true);
 
             Configuration = builder.Build();
             _complianceLevel = Configuration

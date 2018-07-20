@@ -28,7 +28,7 @@ namespace Seqrus.Web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            System.IO.File.WriteAllText("compliancesettings.json", JsonConvert.SerializeObject(new { ComplianceSettings = model } ));
+            System.IO.File.WriteAllText("compliancesettings.runtime.json", JsonConvert.SerializeObject(new { ComplianceSettings = model } ));
 
             _applicationLifetime.StopApplication();
             return View(nameof(Index));

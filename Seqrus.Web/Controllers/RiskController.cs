@@ -21,9 +21,10 @@ namespace Seqrus.Web.Controllers
             _viewRenderService = viewRenderService ?? throw new ArgumentNullException(nameof(viewRenderService));
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(_settings);
         }
 
         [HttpGet]
@@ -51,7 +52,7 @@ namespace Seqrus.Web.Controllers
                 request.Path.Value.ToLowerInvariant().Replace(nameof(IframeTest).ToLowerInvariant(), nameof(Iframe)),
                 request.QueryString);
 
-            var iframeTestMarkup = _viewRenderService.RenderToString("~/Views/Home/IframeTest.cshtml", framedContent);
+            var iframeTestMarkup = _viewRenderService.RenderToString("~/Views/Risk/IframeTest.cshtml", framedContent);
 
             var bytes = Encoding.UTF8.GetBytes(iframeTestMarkup);
             stream.Write(bytes, 0, bytes.Length);
