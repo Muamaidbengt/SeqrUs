@@ -1,0 +1,8 @@
+﻿{
+  "ComplianceSettings": {
+    "SecurityMisconfiguration": true,
+    "CrossSiteScripting": true,
+    "SensitiveDataExposure": true,
+    "InsufficientLoggingAndMonitoring": false 
+  }
+}
