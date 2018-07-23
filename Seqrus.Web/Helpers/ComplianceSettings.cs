@@ -6,5 +6,6 @@
         public bool CrossSiteScripting { get; set; }
         public bool SensitiveDataExposure { get; set; }
         public bool InsufficientLoggingAndMonitoring { get; set; }
+        public bool CrossSiteRequestForgery { get; set; }
     }
 }

@@ -142,7 +142,7 @@ namespace Seqrus.Web.Helpers
 
         public static void AddAntiforgery(IServiceCollection services)
         {
-            if (Settings.CrossSiteScripting)
+            if (Settings.CrossSiteRequestForgery)
                 return; // ASP.Net does no anti-forgery token validation by default
 
             // Add the token to all razor forms

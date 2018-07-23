@@ -3,6 +3,7 @@
     "SecurityMisconfiguration": true,
     "CrossSiteScripting": true,
     "SensitiveDataExposure": true,
-    "InsufficientLoggingAndMonitoring": false 
+    "InsufficientLoggingAndMonitoring": true,
+    "CrossSiteRequestForgery": true 
   }
 }

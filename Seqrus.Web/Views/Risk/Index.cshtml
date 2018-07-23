@@ -76,8 +76,6 @@
                     </div>
                 </div>
             </div>
-
-
         </section>
 
         <section id="a4" class="seq-section">
@@ -201,8 +199,8 @@
                 When (not if) an attack is made on your system, you want to:
                 <ul>
                     <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                    <li>Monitor the attack patterns to adapt for future attacks</li>
                     <li>Determine the scope and effects of the attack</li>
+                    <li>Monitor the attack patterns to adapt for future attacks</li>
                     <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
                 </ul>
             </p>
@@ -226,7 +224,15 @@
     </section>
     <section id="a8-2013" class="seq-section">
         <h2 class="page-header">A8:2013 - Cross-Site Request Forgery (CSRF)</h2>
-        <div class="seq-description"></div>
+        <div class="seq-description">
+            <p>
+                Even though CSRF has dropped off the OWASP top 10 list, it is still relevant to test for it.
+            </p>
+            <p>
+                Exposure to this risk means that an attacker can impersonate your users,
+                thereby gaining unauthorized access to information and credentials.
+            </p>
+        </div>
         <div class="seq-test">
             <div class="panel panel-default">
                 <div class="panel-heading">Check if the application forms accept POST input coming from a different domain</div>
@@ -257,7 +263,7 @@
                         <li><a href="#a8">A8 - Insecure Deserialization</a></li>
                         <li><a href="#a9">A9 - Using Components With Known Vulnerabilities</a></li>
                         <li><a href="#a10">A10 - Insufficient Logging and Monitoring</a></li>
-                        <li><a href="#a8-2013">A8 2013 - Insufficient Logging and Monitoring</a></li>
+                        <li><a href="#a8-2013">A8 2013 - Cross-Site Request Forgery (CSRF)</a></li>
                     </ul>
                 </li>
             </ul>
