@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Services;
@@ -138,6 +139,21 @@ namespace Seqrus.Web.Helpers
                 return next();
             });
         }
+
+        public static void AddAntiforgery(IServiceCollection services)
+        {
+            if (Settings.CrossSiteScripting)
+                return; // ASP.Net does no anti-forgery token validation by default
+
+            // Add the token to all razor forms
+            services.AddAntiforgery();
+
+            // We also need to validate the token. Here we'll do it globally,
+            // but you could apply it on a controller or a single action if necessary.
+            // See https://docs.microsoft.com/en-us/aspnet/core/security/anti-request-forgery 
+            services.AddMvc(options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+        }
+
 
         public static void AddAuthentication(IServiceCollection services)
         {

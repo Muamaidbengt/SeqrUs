@@ -193,37 +193,53 @@
 
             <read-more href="https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities" />
         </section>
-        <section id="a10" class="seq-section">
-            <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
+    <section id="a10" class="seq-section">
+        <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
             
-            <div class="seq-description">
-                <p>
-                    When (not if) an attack is made on your system, you want to:
-                    <ul>
-                        <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                        <li>Monitor the attack patterns to adapt for future attacks</li>
-                        <li>Determine the scope and effects of the attack</li>
-                        <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
-                    </ul>
-                </p>
-                <p>Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.</p>
+        <div class="seq-description">
+            <p>
+                When (not if) an attack is made on your system, you want to:
+                <ul>
+                    <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
+                    <li>Monitor the attack patterns to adapt for future attacks</li>
+                    <li>Determine the scope and effects of the attack</li>
+                    <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
+                </ul>
+            </p>
+            <p>Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.</p>
 
-                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring" />
-            </div>
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the logs for failed login attempts</div>
-                    <div class="panel-body">
-                        Attempt to <a asp-controller="User" asp-action="Index">login to the application</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true"/>, the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
-                            <li>If <risk-exposure is-exposed="false"/>, the logs contain details about the failed login attempt.</li>
-                        </ul>
-                    </div>
+            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring" />
+        </div>
+        <div class="seq-test">
+            <div class="panel panel-default">
+                <div class="panel-heading">Check the logs for failed login attempts</div>
+                <div class="panel-body">
+                    Attempt to <a asp-controller="User" asp-action="Index">login to the application</a> using invalid credentials, then <a asp-controller="Audit" asp-action="Logs">check the logs for failed attempts</a>.
+                    <ul>
+                        <li>If <risk-exposure is-exposed="true"/>, the logs contain no information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
+                        <li>If <risk-exposure is-exposed="false"/>, the logs contain details about the failed login attempt.</li>
+                    </ul>
                 </div>
             </div>
+        </div>
            
-        </section>
+    </section>
+    <section id="a8-2013" class="seq-section">
+        <h2 class="page-header">A8:2013 - Cross-Site Request Forgery (CSRF)</h2>
+        <div class="seq-description"></div>
+        <div class="seq-test">
+            <div class="panel panel-default">
+                <div class="panel-heading">Check if the application forms accept POST input coming from a different domain</div>
+                <div class="panel-body">
+                    Download <a asp-controller="Store" asp-action="CrossSitePostTest">this test page</a> to your device, open it and click the button on it.
+                    <ul>
+                        <li>If <risk-exposure is-exposed="true" />, this application will display an order confirmation message.</li>
+                        <li>If <risk-exposure is-exposed="false" />, the application will display an error message (HTTP 400), indicating that the application is configured to not accept POST input originating from other domains.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
     </div>
     <div class="col-md-3" role="complementary">
         <nav class="hidden-sm hidden-xs seq-sidebar" id="seq-risks-sidebar" data-spy="affix">
@@ -241,6 +257,7 @@
                         <li><a href="#a8">A8 - Insecure Deserialization</a></li>
                         <li><a href="#a9">A9 - Using Components With Known Vulnerabilities</a></li>
                         <li><a href="#a10">A10 - Insufficient Logging and Monitoring</a></li>
+                        <li><a href="#a8-2013">A8 2013 - Insufficient Logging and Monitoring</a></li>
                     </ul>
                 </li>
             </ul>
@@ -250,25 +267,5 @@
 
 @section scripts
 {
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("body").scrollspy({ target: "#seq-risks-sidebar" });
-
-        var bar = $("#seq-risks-sidebar");
-        bar.affix({
-            offset: {
-                top: function () {
-                    var c = bar.offset().top,
-                        d = parseInt(bar.children(0).css("margin-top"), 10),
-                        e = $(".navbar").height();
-                    console.log(e);
-                    return this.top = c - e - d;
-                },
-                bottom: function () {
-                    return this.bottom = 0;
-                }
-            }
-        });
-    });
-</script>
+<script type="text/javascript" src="~/js/risk.js"></script>
 }

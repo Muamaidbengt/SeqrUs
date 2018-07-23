@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Seqrus.Web.Controllers;
 using Seqrus.Web.Helpers;
 using Seqrus.Web.Services;
 
@@ -31,9 +32,11 @@ namespace Seqrus.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            
             services.AddSingleton(_complianceLevel);
             services.AddSingleton<ILoggingService, InMemoryLogger>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
+            ApplicationConfigurator.AddAntiforgery(services);
             ApplicationConfigurator.AddAuthentication(services);
         }
 
@@ -46,12 +49,12 @@ namespace Seqrus.Web
             ApplicationConfigurator.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));
 
             app.UseStaticFiles();
-
+            
             ApplicationConfigurator.ConfigureCachingHeaders(app);
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(name: "default", template: "{controller=About}/{action=Index}/{id?}");
             });
 
             app.ApplicationServices.GetService<ILoggingService>().ApplicationStarted();

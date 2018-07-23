@@ -1,0 +1,23 @@
+﻿@using Seqrus.Web.ViewModels
+@model string
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Cross-site POST test</title>
+</head>
+<body style="background-color:mediumseagreen">
+    <div>
+        <p>
+            Clicking the button below will attempt to buy a million sprockets from the store at @Model. If an HTTP 400 error shows up,
+            it means the server has rejected the request, indicating that it is not vulnerable to this type of cross-site scripting attack.
+        </p>
+        <form method="post" action="@Model">
+            <input type="hidden" name="@nameof(SprocketCartModel.Quantity)" value="1000000" />
+            <input type="hidden" name="@nameof(SprocketCartModel.Address)" value="Evil McHackerson, Segfault Drive 123, Hackington" />
+            <input type="submit" value="Click me!" />
+        </form>
+    </div>
+</body>
+</html>

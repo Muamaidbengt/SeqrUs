@@ -1,0 +1,21 @@
+﻿@using Seqrus.Web.ViewModels
+@model SprocketCartModel
+
+<h1>The Sprocket Store</h1>
+
+<p>Here you can buy as many Sprockets as you like for the fantastic price of 42€ each!</p>
+
+<form asp-action="Purchase">
+    <div class="form-group">
+        <label asp-for="Quantity">How many sprockets do you want?</label>
+        <input asp-for="Quantity" />
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="Address">Where do you want them delivered to?</label>
+        <input asp-for="Address" />
+    </div>
+
+    
+    <input type="submit" class="btn btn-default" value="Buy"/>
+</form>
