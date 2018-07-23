@@ -30,7 +30,13 @@
                 A10 - Insufficient Logging and Monitoring
             </label>
         </div>
-        
+
+        <div class="checkbox">
+            <label for="@nameof(Model.CrossSiteRequestForgery)">
+                <input asp-for="CrossSiteRequestForgery" />
+                A8 2013 - Cross-Site Request Forgery (CSRF)
+            </label>
+        </div>
         <button type="submit" class="btn btn-login">Apply</button>
     </form>
 </div>
