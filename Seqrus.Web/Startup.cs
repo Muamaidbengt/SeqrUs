@@ -43,7 +43,7 @@ namespace Seqrus.Web
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             ApplicationConfigurator.ConfigureContentSecurityPolicy(app);
-            ApplicationConfigurator.ConfigureOriginHeaders(app);
+            ApplicationConfigurator.ConfigureOriginServerHeaders(app);
             ApplicationConfigurator.ConfigureTransportSecurityHeaders(app);
             ApplicationConfigurator.ConfigureErrorHandling(app);
             ApplicationConfigurator.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));

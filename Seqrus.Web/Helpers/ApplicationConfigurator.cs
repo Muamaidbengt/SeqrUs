@@ -20,7 +20,7 @@ namespace Seqrus.Web.Helpers
             Settings = settings;
         }
 
-        public static void ConfigureOriginHeaders(IApplicationBuilder app)
+        public static void ConfigureOriginServerHeaders(IApplicationBuilder app)
         {
             if (Settings.SecurityMisconfiguration)
                 return; // Kestrel is non-compliant by default
