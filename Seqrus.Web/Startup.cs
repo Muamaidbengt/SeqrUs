@@ -26,7 +26,7 @@ namespace Seqrus.Web
             _complianceLevel = Configuration
                 .GetSection(nameof(ComplianceSettings))
                 .Get<ComplianceSettings>();
-            ApplicationConfigurator.Use(_complianceLevel);
+            ConfigurableCountermeasures.Use(_complianceLevel);
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -36,21 +36,21 @@ namespace Seqrus.Web
             services.AddSingleton(_complianceLevel);
             services.AddSingleton<ILoggingService, InMemoryLogger>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
-            ApplicationConfigurator.AddAntiforgery(services);
-            ApplicationConfigurator.AddAuthentication(services);
+            ConfigurableCountermeasures.AddAntiforgery(services);
+            ConfigurableCountermeasures.AddAuthentication(services);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            ApplicationConfigurator.ConfigureContentSecurityPolicy(app);
-            ApplicationConfigurator.ConfigureOriginServerHeaders(app);
-            ApplicationConfigurator.ConfigureTransportSecurityHeaders(app);
-            ApplicationConfigurator.ConfigureErrorHandling(app);
-            ApplicationConfigurator.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));
+            ConfigurableCountermeasures.ConfigureContentSecurityPolicy(app);
+            ConfigurableCountermeasures.ConfigureOriginServerHeaders(app);
+            ConfigurableCountermeasures.ConfigureTransportSecurityHeaders(app);
+            ConfigurableCountermeasures.ConfigureErrorHandling(app);
+            ConfigurableCountermeasures.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));
 
             app.UseStaticFiles();
             
-            ApplicationConfigurator.ConfigureCachingHeaders(app);
+            ConfigurableCountermeasures.ConfigureCachingHeaders(app);
 
             app.UseMvc(routes =>
             {

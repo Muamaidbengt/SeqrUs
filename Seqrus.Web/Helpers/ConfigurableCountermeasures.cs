@@ -11,7 +11,7 @@ using Seqrus.Web.Services;
 
 namespace Seqrus.Web.Helpers
 {
-    public static class ApplicationConfigurator
+    public static class ConfigurableCountermeasures
     {
         public static ComplianceSettings Settings { get; private set; }
 
