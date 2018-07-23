@@ -16,6 +16,9 @@
         <form method="post" action="@Model">
             <input type="hidden" name="@nameof(SprocketCartModel.Quantity)" value="1000000" />
             <input type="hidden" name="@nameof(SprocketCartModel.Address)" value="Evil McHackerson, Segfault Drive 123, Hackington" />
+            
+            <!--Request verification token (probably incorrect though) -->
+            <input type="hidden" name="__RequestVerificationToken" value="CfDJ8FR7UEHypt5Im9ueTYozC18bggsvCJqaz5Phqu7_uj3W9aLOmUEXdFkCZxiHSYPeh9ehkyivJiqjnvgjXZcCCXSYxDX9pgPfpm1y7BiBc9oHA66r6V8Jh_znBQZ0QRSV6o8IUXbaMnLcVbzA2FiVMck"/>
             <input type="submit" value="Click me!" />
         </form>
     </div>

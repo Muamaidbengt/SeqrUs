@@ -235,12 +235,12 @@
         </div>
         <div class="seq-test">
             <div class="panel panel-default">
-                <div class="panel-heading">Check if the application forms accept POST input coming from a different domain</div>
+                <div class="panel-heading">Check if the application forms accept POST input coming from a different domain without a correct synchronization (anti-forgery) nonce</div>
                 <div class="panel-body">
                     Download <a asp-controller="Store" asp-action="CrossSitePostTest">this test page</a> to your device, open it and click the button on it.
                     <ul>
                         <li>If <risk-exposure is-exposed="true" />, this application will display an order confirmation message.</li>
-                        <li>If <risk-exposure is-exposed="false" />, the application will display an error message (HTTP 400), indicating that the application is configured to not accept POST input originating from other domains.</li>
+                        <li>If <risk-exposure is-exposed="false" />, the application will display an error message (HTTP 400), indicating that the application is configured to not accept POST input without the anti-forgery nonce.</li>
                     </ul>
                 </div>
             </div>
