@@ -5,19 +5,19 @@
 <p>You have ordered the following:</p>
 <table class="table table-striped">
     <thead>
-    <tr>
-        <th>Type</th>
-        <th>Quantity</th>
-        <th>Amount</th>
-    </tr>
+        <tr>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>Sprocket</td>
-        <td>@Model.Quantity</td>
-        <td>€ @Model.Amount</td>
-    </tr>
+        <tr>
+            <td>Sprocket</td>
+            <td>@Model.Quantity</td>
+            <td>€ @Model.Amount</td>
+        </tr>
     </tbody>
 </table>
-<p>The sprockets will be delivered to @Model.Address within a week.</p>
-<p>Your credit card will be billed a total of € @Model.Amount. We hope you will enjoy your shiny sprockets!</p>
+<p>The sprockets will be delivered to <strong>@Model.Address</strong> within a week.</p>
+<p>Your credit card will be billed a total of <strong>€ @Model.Amount</strong>. We hope you will enjoy your shiny sprockets!</p>
