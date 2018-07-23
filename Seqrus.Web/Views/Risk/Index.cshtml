@@ -40,7 +40,11 @@
             <div class="seq-description">
                 <p>Your data is probably important to you, so you should take adequate measures to protect it (e.g. by encrypting it), both in transit and at rest.</p>
                 <p>Exposure to this risk means that an attacker can gain unauthorized access to your data.</p>
-                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure" />
+                
+                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">
+                    <p>Over the last few years, this has been the most common impactful attack. The most common flaw is simply not encrypting sensitive data.</p>
+                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">The OWASP Top 10 2017 Project</a></footer>
+                </blockquote>
             </div>
 
             <div class="seq-test">
@@ -98,7 +102,10 @@
                     Exposure to this risk means that an attacker can gain information about the inner workings of your system
                     that can be useful to plan and execute further attacks on it. In more extreme cases, it may compromise the entire system.
                 </p>
-                <read-more href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration" />
+                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">
+                    <p>Attackers will often attempt to exploit unpatched flaws or access default accounts, unused pages, unprotected files and directories, etc to gain unauthorized access or knowledge of the system.</p>
+                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">The OWASP Top 10 2017 Project</a></footer>
+                </blockquote>
             </div>
 
             <div class="seq-test">
@@ -141,18 +148,17 @@
             
             <div class="seq-description">
                 <p>Exposure to this risk means an attacker may be able to gain unauthorized access to your application and expose your clients to malicious code.</p>
+                
+                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">
+                    <p>
+                        XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications. &hellip;
+                        
+                        The impact of XSS [includes] &hellip; remote code execution on the victim's browser, such as stealing credentials, sessions, or delivering malware to the victim.
+                    </p>
+                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">The OWASP Top 10 2017 Project</a></footer>
+                </blockquote>
             </div>
             
-            <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">
-                <p>
-                    XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications. /../
-                    <br />
-                    The impact of XSS [includes] /../ remote code execution on the victim's browser, such as stealing credentials, sessions, or delivering malware to the victim.
-                </p>
-            </blockquote>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)" />
-
             <div class="seq-test">
                 <div class="panel panel-default">
                     <div class="panel-heading">Check the Content-Security-Policy response header</div>
@@ -204,20 +210,20 @@
             
         <div class="seq-description">
             <p>
-                When (not if) an attack is made on your system, you want to:
+                When your system is being attacked, you want to:
                 <ul>
                     <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                    <li>Determine the scope and effects of the attack</li>
+                    <li>Determine the source, target, scope and effects of the attack</li>
                     <li>Monitor the attack patterns to adapt for future attacks</li>
                     <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
                 </ul>
             </p>
-            <p>Exposure to this risk means that an attacker can go unnoticed in your application and without fear of prosecution.</p>
+            <p>Exposure to this risk means that an attacker can go undetected in your application and that attacks can be made without fear of prosecution.</p>
+            
             <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">
                 <p>Most successful attacks start with vulnerability probing. Allowing such probes to continue can raise the likelihood of successful exploit to nearly 100%.</p>
-                <footer>The OWASP Top 10 2017 Project</footer>
+                <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">The OWASP Top 10 2017 Project</a></footer>
             </blockquote>
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring" />
         </div>
         <div class="seq-test">
             <div class="panel panel-default">
@@ -246,10 +252,8 @@
             
             <blockquote cite="https://www.owasp.org/index.php/Top_10_2013-A8-Cross-Site_Request_Forgery_(CSRF)">
                 <p>Attackers can trick victims into performing any state changing operation the victim is authorized to perform, e.g., updating account details, making purchases, logout and even login.</p>
-                <footer>The OWASP Top 10 2013 Project</footer>
+                <footer><a href="https://www.owasp.org/index.php/Top_10_2013-A8-Cross-Site_Request_Forgery_(CSRF)">The OWASP Top 10 2013 Project</a></footer>
             </blockquote>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10_2013-A8-Cross-Site_Request_Forgery_(CSRF)" />
         </div>
         <div class="seq-test">
             <div class="panel panel-default">
