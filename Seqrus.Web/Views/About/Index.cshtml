@@ -1,13 +1,26 @@
-﻿
+﻿@using Seqrus.Web.Helpers
 @{
-    ViewBag.Title = "About this site";
+    ViewBag.Title = "About this app";
 }
 
-<h1>About this site</h1>
-
+<h1>About this app</h1>
 <p>
     This is an intentionally insecure webapp, intended to be used in security training for developers and testers.
     It highlights some (not all) ways in which an ASP.NET Core application
-    can exhibit security vulnerabilities from the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">OWASP top 10</a> list (2017).
+    can exhibit security vulnerabilities from the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">OWASP top 10 list (2017)</a>.
 </p>
+
+<h2>How to use this app</h2>
+<p>
+    By <a asp-controller="Config" asp-action="Index">changing the configuration of this app</a> and <a asp-controller="Risk" asp-action="Index">running the test cases</a>, 
+    you can see how security flaws/countermeasures manifest themselves, and you can conduct similar tests on your own applications and environments.
+</p>
+
+<p>
+    By reading through <a href="https://github.com/muamaidbengt/seqrus">the source code</a> (in particular, the @nameof(ConfigurableCountermeasures) class), 
+    you can see how various countermeasures can be configured or implemented in ASP.NET Core. Due to the flexibility of ASP.NET Core, there is probably an infinite number of ways
+    to address a particular security issue though, and the solutions offered here are not ideal for every application. YMMV.
+</p>
+
+<h2>Source code</h2>
 <p><a href="https://github.com/muamaidbengt/seqrus">The source code can be found at GitHub</a></p>
