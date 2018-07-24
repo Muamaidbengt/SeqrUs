@@ -1,7 +1,13 @@
 ﻿$(document).ready(function () {
-    $("body").scrollspy({ target: "#seq-risks-sidebar" });
+    var body = $(document.body),
+        window = $(window),
+        bar = $("#seq-risks-sidebar");
 
-    var bar = $("#seq-risks-sidebar");
+    body.scrollspy({ target: "#seq-risks-sidebar" });
+    window.on("load", function () {
+        body.scrollspy("refresh");
+    });
+
     bar.affix({
         offset: {
             top: function () {
