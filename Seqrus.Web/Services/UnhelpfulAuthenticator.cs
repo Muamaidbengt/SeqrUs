@@ -19,7 +19,8 @@ namespace Seqrus.Web.Services
             }
             catch (Exception)
             {
-                throw new LoginFailedException("Login failed!");
+                // Do not emit details to the user
+                throw new LoginFailedException("Login failed! ");
             }
         }
     }
