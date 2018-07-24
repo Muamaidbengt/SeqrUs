@@ -168,7 +168,7 @@ namespace Seqrus.Web.Helpers
                     // Decorate authenticator with a logger
                     var notLoggingAuth = getAuthenticator;
                     getAuthenticator = () =>
-                        new LoggingAuthenticator(provider.GetService<ILoggingService>(), notLoggingAuth());
+                        new LoggingAuthenticator(provider.GetService<ILoggingService>(), notLoggingAuth(), provider.GetRequiredService<IHttpContextAccessor>());
                 }
 
                 if (!Settings.SecurityMisconfiguration)

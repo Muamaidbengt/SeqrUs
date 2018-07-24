@@ -8,12 +8,12 @@ namespace Seqrus.Web.Services
     {
         private readonly List<LogEntry> _logEntries = new List<LogEntry>();
 
-        public void LoginFailed(string username)
+        public void LoginFailed(string username, string sourceIp)
         {
             _logEntries.Add(new LogEntry
             {
                 Category = nameof(LoginFailed),
-                AdditionalInfo = username,
+                AdditionalInfo = $"User: {username}, Ip: {sourceIp}",
                 Timestamp = DateTime.Now
             });
         }

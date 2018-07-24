@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Seqrus.Web.Controllers;
@@ -36,6 +37,7 @@ namespace Seqrus.Web
             services.AddSingleton(_complianceLevel);
             services.AddSingleton<ILoggingService, InMemoryLogger>();
             services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             ConfigurableCountermeasures.AddAntiforgery(services);
             ConfigurableCountermeasures.AddAuthentication(services);
         }
