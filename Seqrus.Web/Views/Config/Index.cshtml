@@ -1,42 +1,48 @@
 ﻿@model Seqrus.Web.Helpers.ComplianceSettings
 @{
-    ViewData["Title"] = "Configuration";
+    ViewData["Title"] = "Configure Countermeasures";
 }
 
-<div class="container seq-form">
-    <form asp-action="Configure">
-        <div class="checkbox">
-            <label for="@nameof(Model.SensitiveDataExposure)">
-                <input asp-for="SensitiveDataExposure" />
-                A3 - Sensitive Data Exposure
-            </label>
-        </div>
+<h1>Configure Countermeasures</h1>
 
-        <div class="checkbox">
-            <label for="@nameof(Model.SecurityMisconfiguration)">
-                <input asp-for="SecurityMisconfiguration" />
-                A6 - Security Misconfiguration
-            </label>
-        </div>
-        <div class="checkbox">
-            <label for="@nameof(Model.CrossSiteScripting)">
-                <input asp-for="CrossSiteScripting" />
-                A7 - Cross-Site Scripting (XSS)
-            </label>
-        </div>
-        <div class="checkbox">
-            <label for="@nameof(Model.InsufficientLoggingAndMonitoring)">
-                <input asp-for="InsufficientLoggingAndMonitoring" />
-                A10 - Insufficient Logging and Monitoring
-            </label>
-        </div>
+<div class="seq-form">
+    <div class="well">
+        <form asp-action="Configure">
+            <div class="checkbox">
+                <label for="@nameof(Model.SensitiveDataExposure)">
+                    <input asp-for="SensitiveDataExposure" />
+                    Exposed to risk: A3 - Sensitive Data Exposure
+                </label>
+            </div>
 
-        <div class="checkbox">
-            <label for="@nameof(Model.CrossSiteRequestForgery)">
-                <input asp-for="CrossSiteRequestForgery" />
-                A8 2013 - Cross-Site Request Forgery (CSRF)
-            </label>
-        </div>
-        <button type="submit" class="btn btn-login">Apply</button>
-    </form>
+            <div class="checkbox">
+                <label for="@nameof(Model.SecurityMisconfiguration)">
+                    <input asp-for="SecurityMisconfiguration" />
+                    Exposed to risk: A6 - Security Misconfiguration
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="@nameof(Model.CrossSiteScripting)">
+                    <input asp-for="CrossSiteScripting" />
+                    Exposed to risk: A7 - Cross-Site Scripting (XSS)
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="@nameof(Model.InsufficientLoggingAndMonitoring)">
+                    <input asp-for="InsufficientLoggingAndMonitoring" />
+                    Exposed to risk: A10 - Insufficient Logging and Monitoring
+                </label>
+            </div>
+
+            <div class="checkbox">
+                <label for="@nameof(Model.CrossSiteRequestForgery)">
+                    <input asp-for="CrossSiteRequestForgery" />
+                    Exposed to risk: A8 2013 - Cross-Site Request Forgery (CSRF)
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-login" aria-describedby="submitHelp">Apply</button>
+            <span id="submitHelp" class="help-block">Note: Changing the settings will restart the application.</span>
+        </form>
+    </div>
 </div>
