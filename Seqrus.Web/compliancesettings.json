@@ -4,6 +4,7 @@
     "CrossSiteScripting": true,
     "SensitiveDataExposure": true,
     "InsufficientLoggingAndMonitoring": true,
-    "CrossSiteRequestForgery": true 
+    "CrossSiteRequestForgery": true,
+    "BrokenAuthenticationAndSessionManagement": true 
   }
 }

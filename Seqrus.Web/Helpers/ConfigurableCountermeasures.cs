@@ -158,10 +158,18 @@ namespace Seqrus.Web.Helpers
         public static void AddAuthentication(IServiceCollection services)
         {
             services.AddScoped<StaticAuthenticator>();
+            services.AddSingleton<IFailedLoginAttemptsRepository, FailedLoginAttempsInMemoryRepository>();
 
             services.AddScoped(provider =>
             {
                 Func<IAuthenticationService> getAuthenticator = provider.GetService<StaticAuthenticator>;
+
+                if (!Settings.BrokenAuthenticationAndSessionManagement)
+                {
+                    // Decorate authenticator with anti-brute force mechanism (temporary account locking)
+                    var notLockingAuth = getAuthenticator;
+                    getAuthenticator = () => new AntiBruteForceAuthenticator(notLockingAuth(), provider.GetRequiredService<IFailedLoginAttemptsRepository>());
+                }
 
                 if (!Settings.InsufficientLoggingAndMonitoring)
                 {

@@ -7,5 +7,6 @@
         public bool SensitiveDataExposure { get; set; }
         public bool InsufficientLoggingAndMonitoring { get; set; }
         public bool CrossSiteRequestForgery { get; set; }
+        public bool BrokenAuthenticationAndSessionManagement { get; set; }
     }
 }

@@ -1,2 +1,42 @@
-﻿<h2 class="page-header">A2:2017 - Broken Authentication and Session Management <risk-exposure /></h2>
-<read-more href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication" />
+﻿@model Seqrus.Web.Helpers.ComplianceSettings
+<h2 class="page-header">A2:2017 - Broken Authentication and Session Management <risk-exposure is-exposed="Model.BrokenAuthenticationAndSessionManagement" /></h2>
+
+<div class="seq-description">
+    <p>
+        To be confident in the identity of your individual users, you need to look at how authentication is implemented.
+        What are the ways in which a user can authenticate? When and how can credentials be revoked? When and how can they be recovered?
+        How are passwords generated, communicated and stored?
+    </p>
+    <p>Exposure to this risk means that an attacker can impersonate a legitimate user and thereby gain access to your data.</p>
+
+    <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication">
+        <p>
+            Attackers have to gain access to only a few accounts, or just one admin account to compromise the system.
+            Depending on the domain of the application, this may allow money laundering, social security fraud,
+            and identity theft, or disclose legally protected highly sensitive information.
+        </p>
+        <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication">The OWASP Top 10 2017 Project</a></footer>
+    </blockquote>
+</div>
+
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Attempt to brute-force the password for a known account name</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Attempt to authenticate to the application using a known account name, but invalid password.
+                    <ol>
+                        <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
+                        <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                    </ol>
+                </li>
+                <li>Repeat a couple of times.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, each attempt will be evaluated (and responded to in a timely manner), indicating that a brute-force attack might be possible. Note though that adequate password complexity requirements can make the estimated time required for brute forcing infeasibly high. If the authentication process includes a second factor it may likewise prevent access to your application.</li>
+                <li>If <risk-exposure is-exposed="false" />, the login attempts will eventually result in the account being locked out, or gradually increase the response time for each authentication attempt (thus discouraging brute forcing of the passwords).</li>
+            </ul>
+        </div>
+    </div>
+</div>
