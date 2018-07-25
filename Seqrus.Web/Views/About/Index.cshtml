@@ -7,20 +7,35 @@
 <p>
     This is an intentionally insecure webapp, intended to be used in security training for developers and testers.
     It highlights some (not all) ways in which an ASP.NET Core application
-    can exhibit security vulnerabilities from the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">OWASP top 10 list (2017)</a>.
+    can exhibit security issues from the <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project">OWASP top 10 list (2017)</a>.
+</p>
+
+<p>
+    The app lists issues (risks) and for each risk, provides a few test cases specific to this application,
+    but hopefully they can be used as inspiration for testing other applications as well.
+   
 </p>
 
 <h2>How to use this app</h2>
 <p>
-    By <a asp-controller="Config" asp-action="Index">changing the configuration of this app</a> and <a asp-controller="Risk" asp-action="Index">running the test cases</a>, 
+    By <a asp-controller="Config" asp-action="Index">changing the configuration of this app</a> and <a asp-controller="Risk" asp-action="Index">using the test ideas</a>,
     you can see how security flaws/countermeasures manifest themselves, and you can conduct similar tests on your own applications and environments.
+    
+    <div class="seq-callout seq-callout-danger">
+        <h4 class="text-danger">This is not an exhaustive list</h4>
+
+        The list of test cases is not intended to be exhaustive and immediately applicable to every other application out there. 
+        Some of the tests might be irrelevant for different applications.<br/>
+        Please DO NOT think of this as a checklist to run mindlessly on your production app to determine if it is secure or not.<br/>
+        Please DO continue to use your knowledge, judgement and risk-assessment skills as a software tester to determine the adequate testing effort for YOUR application.
+    </div>
 </p>
 
 <p>
-    By reading through <a href="https://github.com/muamaidbengt/seqrus">the source code</a> (in particular, the @nameof(ConfigurableCountermeasures) class), 
+    By reading through <a href="https://github.com/muamaidbengt/seqrus">the source code</a> (in particular, the <code>@nameof(ConfigurableCountermeasures)</code> class),
     you can see how various countermeasures can be configured or implemented in ASP.NET Core. Due to the flexibility of ASP.NET Core, there is probably an infinite number of ways
-    to address a particular security issue though, and the solutions offered here are not ideal for every application. YMMV.
+    to address a particular security issue though, and the solutions offered here are not ideal for every application. Hopefully, they can serve as a starting/discussion point though.
 </p>
 
 <h2>Source code</h2>
-<p><a href="https://github.com/muamaidbengt/seqrus">The source code can be found at GitHub</a></p>
+<p><a href="https://github.com/muamaidbengt/seqrus">The source code can be found at GitHub</a>.</p>

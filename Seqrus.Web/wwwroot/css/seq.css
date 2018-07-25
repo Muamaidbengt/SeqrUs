@@ -6,6 +6,10 @@
     border-radius: 3px;
 }
 
+.seq-callout-danger {
+    border-left-color: #ce4844;
+}
+
 .seq-test,
 .seq-description {
     position: relative;
