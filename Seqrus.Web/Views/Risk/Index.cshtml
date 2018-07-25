@@ -52,10 +52,14 @@
                     <div class="panel-heading">Check the Strict-Transport-Security response header</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works)</li>
-                            <li>Go to the network tab of the Developer tools</li>
-                            <li>Make a HTTP request to the application</li>
-                            <li>Locate the request in the Developer tools and inspect the response headers</li>
+                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                            <li>Go to the Network tab of the Developer tools.</li>
+                            <li>
+                                Make a HTTP request to the application.<ol>
+                                    <li>In this application, refreshing this page should be sufficient.</li>
+                                </ol>
+                            </li>
+                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
@@ -67,10 +71,15 @@
                     <div class="panel-heading">Check the Cache-Control response header</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works)</li>
-                            <li>Go to the network tab of the Developer tools</li>
-                            <li>Make a HTTP request to the application to <a asp-controller="Risk" asp-action="Secrets">a resource containing sensitive information</a></li>
-                            <li>Locate the request in the Developer tools and inspect the response headers</li>
+                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                            <li>Go to the Network tab of the Developer tools.</li>
+                            <li>
+                                Make a HTTP request to the application to a resource containing sensitive information.
+                                <ol>
+                                    <li>For this application, you can visit <a asp-controller="Risk" asp-action="Secrets">this page, containing sensitive client information</a>.</li>
+                                </ol>
+                            </li>
+                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
@@ -83,7 +92,13 @@
                     <div class="panel-body">
                         <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
                         <ol>
-                            <li>Make a HTTP request to the application to <a asp-protocol="http" asp-controller="Risk" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http" ), Config.GetValue<int>("Bindings:http")))">a resource containing sensitive information</a> over an unencrypted (i.e. HTTP, not HTTPS) connection</li>
+                            <li>
+                                Make a HTTP request to the application to a resource containing sensitive information over an unencrypted (i.e. HTTP, not HTTPS) connection.
+                                <ol>
+                                    <li>For this application, you can visit <a asp-protocol="http" asp-controller="Risk" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), Config.GetValue<int>("Bindings:http")))">this page, containing sensitive client information</a>.</li>
+                                </ol>
+                            </li>
+
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, sensitive data (in this case, information about a client) will be transmitted over an unencrypted connection.</li>
@@ -125,9 +140,13 @@
                     <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works)</li>
-                            <li>Go to the network tab of the Developer tools</li>
-                            <li>Make a HTTP request to the application</li>
+                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                            <li>Go to the Network tab of the Developer tools.</li>
+                            <li>
+                                Make a HTTP request to the application.<ol>
+                                    <li>In this application, refreshing this page should be sufficient.</li>
+                                </ol>
+                            </li>
                             <li>Locate the request in the Developer tools and inspect the response headers</li>
                         </ol>
                         <ul>
@@ -141,8 +160,12 @@
                     <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Provoke the application to emit an error message (in this application, you can <a asp-action="FailDatabaseConnection">simulate a failing database</a>), but it depends a lot on the application you're testing</li>
-                            <li>Inspect the error message shown to the user</li>
+                            <li>Provoke the application to emit an error message.
+                                <ol>
+                                    <li>In this application, you can <a asp-action="FailDatabaseConnection">simulate a failing database</a>).</li>
+                                    <li>Depending on the application you're testing, there may be multiple different scenarios to try here.</li>
+                                </ol></li>
+                            <li>Inspect the error message(s) shown to the user.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, sensitive data (in this example, a connection string including database credentials) will leak through the error message.</li>
@@ -154,8 +177,14 @@
                     <div class="panel-heading">Check for unneccessary details in log-in error messages</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Provoke the application to emit an error message (in this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>), but it depends a lot on the application you're testing</li>
-                            <li>Inspect the error message shown to the user</li>
+                            <li>
+                                Provoke the application to emit an error message by attempting to use invalid credentials.
+                                <ol>
+                                    <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
+                                    <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                                </ol>
+                            </li>
+                            <li>Inspect the error message(s) shown to the user.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the error message will contain sensitive and/or information that can be useful to an attacker (in this case, that the user "admin" exists but that the password was wrong).</li>
@@ -187,10 +216,14 @@
                     <div class="panel-heading">Check the Content-Security-Policy response header</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works)</li>
-                            <li>Go to the network tab of the Developer tools</li>
-                            <li>Make a HTTP request to the application</li>
-                            <li>Locate the request in the Developer tools and inspect the response headers</li>
+                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                            <li>Go to the Network tab of the Developer tools.</li>
+                            <li>
+                                Make a HTTP request to the application.<ol>
+                                    <li>In this application, refreshing this page should be sufficient.</li>
+                                </ol>
+                            </li>
+                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
@@ -203,10 +236,14 @@
                     <div class="panel-heading">Check the X-Frame-Options response header</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works)</li>
-                            <li>Go to the network tab of the Developer tools</li>
-                            <li>Make a HTTP request to the application</li>
-                            <li>Locate the request in the Developer tools and inspect the response headers</li>
+                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                            <li>Go to the Network tab of the Developer tools.</li>
+                            <li>
+                                Make a HTTP request to the application.<ol>
+                                    <li>In this application, refreshing this page should be sufficient.</li>
+                                </ol>
+                            </li>
+                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
@@ -219,8 +256,11 @@
                     <div class="panel-heading">Check if the application loads in an iframe on a different domain</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Construct a HTML page containing the target application in an <code>iframe</code> and save it to your device. For this application, you can <a asp-controller="Risk" asp-action="IframeTest">download this test page</a></li>
-                            <li>Open the html page in a browser on your device</li>
+                            <li>Construct a HTML page containing the target application in an <code>iframe</code> and save it to your device.
+                                <ol>
+                                    <li>For this application, you can <a asp-controller="Risk" asp-action="IframeTest">download this test page</a>.</li>
+                                </ol></li>
+                            <li>Open the html page in a browser on your device.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the target application will open inside an <code>iframe</code>.</li>
@@ -248,10 +288,10 @@
                 <p>
                     When your system is being attacked, you want to:
                     <ul>
-                        <li>Become alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                        <li>Determine the source, target, scope and effects of the attack</li>
-                        <li>Monitor the attack patterns to adapt for future attacks</li>
-                        <li>Collect evidence of the attack to be used for prosecution of the attacker</li>
+                        <li>cecome alerted to the attack so you can activate countermeasures to foil the attacker</li>
+                        <li>determine the source, target, scope and effects of the attack</li>
+                        <li>monitor the attack patterns to adapt for future attacks</li>
+                        <li>collect evidence of the attack to be used for prosecution of the attacker.</li>
                     </ul>
                 </p>
                 <p>Exposure to this risk means that an attacker can go undetected in your application and that attacks can be made without fear of prosecution.</p>
@@ -266,8 +306,18 @@
                     <div class="panel-heading">Check the logs for failed login attempts</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Attempt to <a asp-controller="User" asp-action="Index">authenticate to the application</a> using invalid credentials, token or similar. For this application, try using an incorrect username/password.</li>
-                            <li>Check the log(s) for the application. In this application, there is only one log, <a asp-controller="Audit" asp-action="Logs">available here</a>.</li>
+                            <li>
+                                Provoke the application to log an error message by attempting to use invalid credentials (e.g. username/password, oauth token or similar).
+                                <ol>
+                                    <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
+                                    <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                                </ol>
+                            </li>
+                            <li>Inspect the log(s) for the application.
+                                <ol>
+                                    <li>In this application, there is only one log, <a asp-controller="Audit" asp-action="Logs">available here</a>.</li>
+                                </ol>
+                            </li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the logs contain no or insufficient information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
@@ -299,9 +349,12 @@
                     <div class="panel-heading">Check if the application forms accept POST input coming from a different domain without a correct synchronization (anti-forgery) nonce</div>
                     <div class="panel-body">
                         <ol>
-                            <li>Construct a HTML page with a <code>form</code> element to make a POST request to the target application in and save it to your device. For this application, you can <a asp-controller="Store" asp-action="CrossSitePostTest">download this test page</a></li>
-                            <li>Open the html page in a browser on your device</li>
-                            <li>Submit the form</li>
+                            <li>Construct a HTML page with a <code>form</code> element to make a POST request to the target application in and save it to your device.
+                                <ol>
+                                    <li>For this application, you can <a asp-controller="Store" asp-action="CrossSitePostTest">download this test page</a>.</li>
+                                </ol></li>
+                            <li>Open the html page in a browser on your device.</li>
+                            <li>Submit the form.</li>
                         </ol>
                         <ul>
                             <li>If <risk-exposure is-exposed="true" />, the application will accept the form. In this example, an order confirmation message will be shown.</li>

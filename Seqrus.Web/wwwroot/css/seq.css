@@ -98,3 +98,7 @@
         width: 263px;
     }
 }
+
+.seq-test ol ol {
+    list-style-type: lower-alpha;
+}
