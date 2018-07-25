@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
-@using Microsoft.Extensions.Configuration
-
-@inject IConfiguration Config
-@model Seqrus.Web.Helpers.ComplianceSettings
+﻿@model Seqrus.Web.Helpers.ComplianceSettings
 @{
     ViewData["Title"] = "Risks";
 }
@@ -26,343 +22,47 @@
         </section>
 
         <section id="a1" class="seq-section">
-            <h2 class="page-header">A1:2017 - Injection <risk-exposure /></h2>
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection" />
+            @await Html.PartialAsync("_A1_2017_Injection")
         </section>
 
         <section id="a2" class="seq-section">
-            <h2 class="page-header">A2:2017 - Broken Authentication and Session Management <risk-exposure /></h2>
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication" />
+            @await Html.PartialAsync("_A2_2017_BrokenAuthentication")
         </section>
 
         <section id="a3" class="seq-section">
-            <h2 class="page-header">A3:2017 - Sensitive Data Exposure <risk-exposure is-exposed="Model.SensitiveDataExposure" /></h2>
-            <div class="seq-description">
-                <p>Your data is probably important to you, so you should take adequate measures to protect it (e.g. by encrypting it), both in transit and at rest.</p>
-                <p>Exposure to this risk means that an attacker can gain unauthorized access to your data.</p>
-
-                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">
-                    <p>Over the last few years, this has been the most common impactful attack. The most common flaw is simply not encrypting sensitive data.</p>
-                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A3-Sensitive_Data_Exposure">The OWASP Top 10 2017 Project</a></footer>
-                </blockquote>
-            </div>
-
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the Strict-Transport-Security response header</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
-                            <li>Go to the Network tab of the Developer tools.</li>
-                            <li>
-                                Make a HTTP request to the application.<ol>
-                                    <li>In this application, refreshing this page should be sufficient.</li>
-                                </ol>
-                            </li>
-                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the <code>Strict-Transport-Security</code> header will not be present, meaning that communication might not be encrypted.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>Strict-Transport-Security</code> header will be present and configured in a way that instructs the client to use HTTPS on subsequent requests.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the Cache-Control response header</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
-                            <li>Go to the Network tab of the Developer tools.</li>
-                            <li>
-                                Make a HTTP request to the application to a resource containing sensitive information.
-                                <ol>
-                                    <li>For this application, you can visit <a asp-controller="Risk" asp-action="Secrets">this page, containing sensitive client information</a>.</li>
-                                </ol>
-                            </li>
-                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the <code>Cache-Control</code> header will not be present, meaning that sensitive data might be cached in the browser or by an intermediary HTTP proxy.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>Cache-Control</code> header will be present and configured in a way that instructs proxies and browsers to not store or use cached responses.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check for HTTP-to-HTTPS redirects</div>
-                    <div class="panel-body">
-                        <div class="alert alert-warning">Note: Before performing this test, <a href="https://really-simple-ssl.com/knowledge-base/clear-hsts-browser/">you should delete any previous HSTS policy settings for this domain from your browser</a>.</div>
-                        <ol>
-                            <li>
-                                Make a HTTP request to the application to a resource containing sensitive information over an unencrypted (i.e. HTTP, not HTTPS) connection.
-                                <ol>
-                                    <li>For this application, you can visit <a asp-protocol="http" asp-controller="Risk" asp-action="Secrets" asp-host="@(new HostString(Context.Request.Host.Host.Replace("https", "http"), Config.GetValue<int>("Bindings:http")))">this page, containing sensitive client information</a>.</li>
-                                </ol>
-                            </li>
-
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, sensitive data (in this case, information about a client) will be transmitted over an unencrypted connection.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the information will instead be redirected over an encrypted HTTPS connection (as should be indicated by a locked padlock icon near the address field in your browser).</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @await Html.PartialAsync("_A3_2017_SensitiveDataExposure")
         </section>
 
         <section id="a4" class="seq-section">
-            <h2 class="page-header">A4:2017 - XML External Entity (XXE) <risk-exposure /></h2>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A4-XML_External_Entities_(XXE)" />
+            @await Html.PartialAsync("_A4_2017_XmlExternalEntity")
         </section>
 
         <section id="a5" class="seq-section">
-            <h2 class="page-header">A5:2017 - Broken Access Control <risk-exposure /></h2>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A5-Broken_Access_Control" />
+            @await Html.PartialAsync("_A5_2017_BrokenAccessControl")
         </section>
 
         <section id="a6" class="seq-section">
-            <h2 class="page-header">A6:2017 - Security Misconfiguration <risk-exposure is-exposed="Model.SecurityMisconfiguration" /></h2>
-
-            <div class="seq-description">
-                <p>
-                    Exposure to this risk means that an attacker can gain information about the inner workings of your system
-                    that can be useful to plan and execute further attacks on it. In more extreme cases, it may compromise the entire system.
-                </p>
-                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">
-                    <p>Attackers will often attempt to exploit unpatched flaws or access default accounts, unused pages, unprotected files and directories, etc to gain unauthorized access or knowledge of the system.</p>
-                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">The OWASP Top 10 2017 Project</a></footer>
-                </blockquote>
-            </div>
-
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
-                            <li>Go to the Network tab of the Developer tools.</li>
-                            <li>
-                                Make a HTTP request to the application.<ol>
-                                    <li>In this application, refreshing this page should be sufficient.</li>
-                                </ol>
-                            </li>
-                            <li>Locate the request in the Developer tools and inspect the response headers</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>Server</code> header will not be present at all in the response.</li>
-                        </ul>
-                        <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment that can be of use to an attacker.</div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Provoke the application to emit an error message.
-                                <ol>
-                                    <li>In this application, you can <a asp-action="FailDatabaseConnection">simulate a failing database</a>).</li>
-                                    <li>Depending on the application you're testing, there may be multiple different scenarios to try here.</li>
-                                </ol></li>
-                            <li>Inspect the error message(s) shown to the user.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, sensitive data (in this example, a connection string including database credentials) will leak through the error message.</li>
-                            <li>If <risk-exposure is-exposed="false" />, a generic error message will be shown without any sensitive information.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check for unneccessary details in log-in error messages</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>
-                                Provoke the application to emit an error message by attempting to use invalid credentials.
-                                <ol>
-                                    <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
-                                    <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
-                                </ol>
-                            </li>
-                            <li>Inspect the error message(s) shown to the user.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the error message will contain sensitive and/or information that can be useful to an attacker (in this case, that the user "admin" exists but that the password was wrong).</li>
-                            <li>If <risk-exposure is-exposed="false" />, a generic error message will be shown without any sensitive information.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @await Html.PartialAsync("_A6_2017_SecurityMisconfiguration")
         </section>
 
         <section id="a7" class="seq-section">
-            <h2 class="page-header">A7:2017 - Cross-Site Scripting (XSS) <risk-exposure is-exposed="Model.CrossSiteScripting" /></h2>
-
-            <div class="seq-description">
-                <p>Exposure to this risk means an attacker may be able to gain unauthorized access to your application and expose your clients to malicious code.</p>
-
-                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">
-                    <p>
-                        XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications. &hellip;
-
-                        The impact of XSS [includes] &hellip; remote code execution on the victim's browser, such as stealing credentials, sessions, or delivering malware to the victim.
-                    </p>
-                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">The OWASP Top 10 2017 Project</a></footer>
-                </blockquote>
-            </div>
-
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the Content-Security-Policy response header</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
-                            <li>Go to the Network tab of the Developer tools.</li>
-                            <li>
-                                Make a HTTP request to the application.<ol>
-                                    <li>In this application, refreshing this page should be sufficient.</li>
-                                </ol>
-                            </li>
-                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust <strong>only</strong> the sources required by this application (i.e. white-listing).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the X-Frame-Options response header</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
-                            <li>Go to the Network tab of the Developer tools.</li>
-                            <li>
-                                Make a HTTP request to the application.<ol>
-                                    <li>In this application, refreshing this page should be sufficient.</li>
-                                </ol>
-                            </li>
-                            <li>Locate the request in the Developer tools and inspect the response headers.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check if the application loads in an iframe on a different domain</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Construct a HTML page containing the target application in an <code>iframe</code> and save it to your device.
-                                <ol>
-                                    <li>For this application, you can <a asp-controller="Risk" asp-action="IframeTest">download this test page</a>.</li>
-                                </ol></li>
-                            <li>Open the html page in a browser on your device.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the target application will open inside an <code>iframe</code>.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @await Html.PartialAsync("_A7_2017_CrossSiteScripting")
         </section>
 
         <section id="a8" class="seq-section">
-            <h2 class="page-header">A8:2017 - Insecure Deserialization <risk-exposure /></h2>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A8-Insecure_Deserialization" />
+            @await Html.PartialAsync("_A8_2017_InsecureDeserialization")
         </section>
+
         <section id="a9" class="seq-section">
-            <h2 class="page-header">A9:2017 - Using Components With Known Vulnerabilities <risk-exposure /></h2>
-
-            <read-more href="https://www.owasp.org/index.php/Top_10-2017_A9-Using_Components_with_Known_Vulnerabilities" />
+            @await Html.PartialAsync("_A9_2017_UsingComponentsWithKnown")
         </section>
+
         <section id="a10" class="seq-section">
-            <h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
-
-            <div class="seq-description">
-                <p>
-                    When your system is being attacked, you want to:
-                    <ul>
-                        <li>cecome alerted to the attack so you can activate countermeasures to foil the attacker</li>
-                        <li>determine the source, target, scope and effects of the attack</li>
-                        <li>monitor the attack patterns to adapt for future attacks</li>
-                        <li>collect evidence of the attack to be used for prosecution of the attacker.</li>
-                    </ul>
-                </p>
-                <p>Exposure to this risk means that an attacker can go undetected in your application and that attacks can be made without fear of prosecution.</p>
-
-                <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">
-                    <p>Most successful attacks start with vulnerability probing. Allowing such probes to continue can raise the likelihood of successful exploit to nearly 100%.</p>
-                    <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">The OWASP Top 10 2017 Project</a></footer>
-                </blockquote>
-            </div>
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check the logs for failed login attempts</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>
-                                Provoke the application to log an error message by attempting to use invalid credentials (e.g. username/password, oauth token or similar).
-                                <ol>
-                                    <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
-                                    <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
-                                </ol>
-                            </li>
-                            <li>Inspect the log(s) for the application.
-                                <ol>
-                                    <li>In this application, there is only one log, <a asp-controller="Audit" asp-action="Logs">available here</a>.</li>
-                                </ol>
-                            </li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the logs contain no or insufficient information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the logs contain details about the failed login attempt.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
+            @await Html.PartialAsync("_A10_2017_InsufficientLogging")
         </section>
-        <section id="a8-2013" class="seq-section">
-            <h2 class="page-header">A8:2013 - Cross-Site Request Forgery (CSRF) <risk-exposure is-exposed="@Model.CrossSiteRequestForgery" /></h2>
-            <div class="seq-description">
-                <p>
-                    Even though CSRF has dropped off the OWASP top 10 list, it is still relevant to test for it.
-                </p>
-                <p>
-                    Exposure to this risk means that an attacker can impersonate your users,
-                    thereby gaining unauthorized access to information and credentials.
-                </p>
 
-                <blockquote cite="https://www.owasp.org/index.php/Top_10_2013-A8-Cross-Site_Request_Forgery_(CSRF)">
-                    <p>Attackers can trick victims into performing any state changing operation the victim is authorized to perform, e.g., updating account details, making purchases, logout and even login.</p>
-                    <footer><a href="https://www.owasp.org/index.php/Top_10_2013-A8-Cross-Site_Request_Forgery_(CSRF)">The OWASP Top 10 2013 Project</a></footer>
-                </blockquote>
-            </div>
-            <div class="seq-test">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Check if the application forms accept POST input coming from a different domain without a correct synchronization (anti-forgery) nonce</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li>Construct a HTML page with a <code>form</code> element to make a POST request to the target application in and save it to your device.
-                                <ol>
-                                    <li>For this application, you can <a asp-controller="Store" asp-action="CrossSitePostTest">download this test page</a>.</li>
-                                </ol></li>
-                            <li>Open the html page in a browser on your device.</li>
-                            <li>Submit the form.</li>
-                        </ol>
-                        <ul>
-                            <li>If <risk-exposure is-exposed="true" />, the application will accept the form. In this example, an order confirmation message will be shown.</li>
-                            <li>If <risk-exposure is-exposed="false" />, the application will not accept the form and/or display an error message. In this example, a HTTP 400 error will be shown, indicating that the application is configured to not accept POST input without the anti-forgery nonce.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <section id="a8-2013" class="seq-section">
+            @await Html.PartialAsync("_A8_2013_CrossSiteRequestForgery")
         </section>
     </div>
     <div class="col-md-3" role="complementary">

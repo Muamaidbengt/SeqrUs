@@ -1,0 +1,75 @@
+﻿<h2 class="page-header">A7:2017 - Cross-Site Scripting (XSS) <risk-exposure is-exposed="Model.CrossSiteScripting" /></h2>
+
+<div class="seq-description">
+    <p>Exposure to this risk means an attacker may be able to gain unauthorized access to your application and expose your clients to malicious code.</p>
+
+    <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">
+        <p>
+            XSS is the second most prevalent issue in the OWASP Top 10, and is found in around two thirds of all applications. &hellip;
+
+            The impact of XSS [includes] &hellip; remote code execution on the victim's browser, such as stealing credentials, sessions, or delivering malware to the victim.
+        </p>
+        <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A7-Cross-Site_Scripting_(XSS)">The OWASP Top 10 2017 Project</a></footer>
+    </blockquote>
+</div>
+
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the Content-Security-Policy response header</div>
+        <div class="panel-body">
+            <ol>
+                <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                <li>Go to the Network tab of the Developer tools.</li>
+                <li>
+                    Make a HTTP request to the application.<ol>
+                        <li>In this application, refreshing this page should be sufficient.</li>
+                    </ol>
+                </li>
+                <li>Locate the request in the Developer tools and inspect the response headers.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, no <code>Content-Security-Policy</code> header will be present, meaning the client receives no instructions on which sources to trust for content. </li>
+                <li>If <risk-exposure is-exposed="false" />, the <code>Content-Security-Policy</code> header will be present and configured in a way that instructs the client to trust <strong>only</strong> the sources required by this application (i.e. white-listing).</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the X-Frame-Options response header</div>
+        <div class="panel-body">
+            <ol>
+                <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                <li>Go to the Network tab of the Developer tools.</li>
+                <li>
+                    Make a HTTP request to the application.<ol>
+                        <li>In this application, refreshing this page should be sufficient.</li>
+                    </ol>
+                </li>
+                <li>Locate the request in the Developer tools and inspect the response headers.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, no <code>X-Frame-Options</code> header will be present, meaning the client receives no restrictions on displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+                <li>If <risk-exposure is-exposed="false" />, the <code>X-Frame-Options</code> header will be present and configured to prevent the client from from displaying the application in a <code>&lt;frame&gt;</code>, <code>&lt;iframe&gt;</code> or <code>&lt;object&gt;</code>.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Check if the application loads in an iframe on a different domain</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Construct a HTML page containing the target application in an <code>iframe</code> and save it to your device.
+                    <ol>
+                        <li>For this application, you can <a asp-controller="Risk" asp-action="IframeTest">download this test page</a>.</li>
+                    </ol>
+                </li>
+                <li>Open the html page in a browser on your device.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, the target application will open inside an <code>iframe</code>.</li>
+                <li>If <risk-exposure is-exposed="false" />, the <code>iframe</code> will be empty, indicating that the <code>X-Frame-Options</code> header has prevented your browser from displaying the page.</li>
+            </ul>
+        </div>
+    </div>
+</div>

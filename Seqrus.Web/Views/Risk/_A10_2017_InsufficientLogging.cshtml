@@ -1,0 +1,45 @@
+﻿<h2 class="page-header">A10:2017 - Insufficient Logging and Monitoring <risk-exposure is-exposed="@Model.InsufficientLoggingAndMonitoring" /></h2>
+
+<div class="seq-description">
+    <p>
+        When your system is being attacked, you want to:
+        <ul>
+            <li>cecome alerted to the attack so you can activate countermeasures to foil the attacker</li>
+            <li>determine the source, target, scope and effects of the attack</li>
+            <li>monitor the attack patterns to adapt for future attacks</li>
+            <li>collect evidence of the attack to be used for prosecution of the attacker.</li>
+        </ul>
+    </p>
+    <p>Exposure to this risk means that an attacker can go undetected in your application and that attacks can be made without fear of prosecution.</p>
+
+    <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">
+        <p>Most successful attacks start with vulnerability probing. Allowing such probes to continue can raise the likelihood of successful exploit to nearly 100%.</p>
+        <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A10-Insufficient_Logging%26Monitoring">The OWASP Top 10 2017 Project</a></footer>
+    </blockquote>
+</div>
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the logs for failed login attempts</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Provoke the application to log an error message by attempting to use invalid credentials (e.g. username/password, oauth token or similar).
+                    <ol>
+                        <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
+                        <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                    </ol>
+                </li>
+                <li>
+                    Inspect the log(s) for the application.
+                    <ol>
+                        <li>In this application, there is only one log, <a asp-controller="Audit" asp-action="Logs">available here</a>.</li>
+                    </ol>
+                </li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, the logs contain no or insufficient information about the failed login attempt, meaning an attacker can attempt to gain unauthorized access to sensitive information without it being noticed.</li>
+                <li>If <risk-exposure is-exposed="false" />, the logs contain details about the failed login attempt.</li>
+            </ul>
+        </div>
+    </div>
+</div>

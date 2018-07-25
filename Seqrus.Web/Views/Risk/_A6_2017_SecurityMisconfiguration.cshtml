@@ -1,0 +1,73 @@
+﻿<h2 class="page-header">A6:2017 - Security Misconfiguration <risk-exposure is-exposed="Model.SecurityMisconfiguration" /></h2>
+
+<div class="seq-description">
+    <p>
+        Exposure to this risk means that an attacker can gain information about the inner workings of your system
+        that can be useful to plan and execute further attacks on it. In more extreme cases, it may compromise the entire system.
+    </p>
+    <blockquote cite="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">
+        <p>Attackers will often attempt to exploit unpatched flaws or access default accounts, unused pages, unprotected files and directories, etc to gain unauthorized access or knowledge of the system.</p>
+        <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A6-Security_Misconfiguration">The OWASP Top 10 2017 Project</a></footer>
+    </blockquote>
+</div>
+
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Check the response headers for unneccessary information about your environment</div>
+        <div class="panel-body">
+            <ol>
+                <li>Open the Developer tools of your browser (pressing the F12 key usually works).</li>
+                <li>Go to the Network tab of the Developer tools.</li>
+                <li>
+                    Make a HTTP request to the application.<ol>
+                        <li>In this application, refreshing this page should be sufficient.</li>
+                    </ol>
+                </li>
+                <li>Locate the request in the Developer tools and inspect the response headers</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, sensitive data (details about the web server software) will leak through the <code>Server</code> header. </li>
+                <li>If <risk-exposure is-exposed="false" />, the <code>Server</code> header will not be present at all in the response.</li>
+            </ul>
+            <div class="alert alert-info">Other headers, such as the <code>X-Powered-By</code>, <code>X-AspNet-Version</code> and <code>X-AspNetMvc-Version</code> headers, may also expose unneccessary details about your environment that can be of use to an attacker.</div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Check for sensitive information in user-visible error messages</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Provoke the application to emit an error message.
+                    <ol>
+                        <li>In this application, you can <a asp-action="FailDatabaseConnection">simulate a failing database</a>).</li>
+                        <li>Depending on the application you're testing, there may be multiple different scenarios to try here.</li>
+                    </ol>
+                </li>
+                <li>Inspect the error message(s) shown to the user.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, sensitive data (in this example, a connection string including database credentials) will leak through the error message.</li>
+                <li>If <risk-exposure is-exposed="false" />, a generic error message will be shown without any sensitive information.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Check for unneccessary details in log-in error messages</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Provoke the application to emit an error message by attempting to use invalid credentials.
+                    <ol>
+                        <li>In this application, you can <a asp-controller="User" asp-action="Index">login with the incorrect password for the "admin" user</a>).</li>
+                        <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                    </ol>
+                </li>
+                <li>Inspect the error message(s) shown to the user.</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, the error message will contain sensitive and/or information that can be useful to an attacker (in this case, that the user "admin" exists but that the password was wrong).</li>
+                <li>If <risk-exposure is-exposed="false" />, a generic error message will be shown without any sensitive information.</li>
+            </ul>
+        </div>
+    </div>
+</div>
