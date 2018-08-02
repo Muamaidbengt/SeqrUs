@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Rendering
 {
     public interface IViewRenderService
     {

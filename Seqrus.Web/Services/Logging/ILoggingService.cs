@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Logging
 {
     public interface ILoggingService
     {

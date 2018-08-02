@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Authentication
 {
     public class UnhelpfulAuthenticator : IAuthenticationService
     {

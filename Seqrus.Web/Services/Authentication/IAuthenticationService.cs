@@ -1,4 +1,4 @@
-﻿namespace Seqrus.Web.Services
+﻿namespace Seqrus.Web.Services.Authentication
 {
     public interface IAuthenticationService
     {

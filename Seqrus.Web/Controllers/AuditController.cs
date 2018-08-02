@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Seqrus.Web.Services;
+using Seqrus.Web.Services.Logging;
 
 namespace Seqrus.Web.Controllers
 {

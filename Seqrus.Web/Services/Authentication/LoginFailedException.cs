@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Authentication
 {
     [Serializable]
     public sealed class LoginFailedException : Exception

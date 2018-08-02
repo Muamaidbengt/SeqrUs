@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Logging
 {
     public class InMemoryLogger : ILoggingService
     {
@@ -29,12 +29,5 @@ namespace Seqrus.Web.Services
         }
 
         public IQueryable<LogEntry> Logs => _logEntries.AsQueryable();
-    }
-
-    public struct LogEntry
-    {
-        public string Category { get; set; }
-        public DateTime Timestamp { get; set; }
-        public string AdditionalInfo { get; set; }
     }
 }

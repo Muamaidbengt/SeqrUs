@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Authentication
 {
     public class AntiBruteForceAuthenticator : IAuthenticationService
     {
@@ -43,30 +42,6 @@ namespace Seqrus.Web.Services
             return _failedLoginAttemptsRepository
                        .Get(username)
                        .Count(attempt => attempt > oldTimes) >= MaxAttemptsBeforeLockout;
-        }
-    }
-
-    public interface IFailedLoginAttemptsRepository
-    {
-        void Add(string username, DateTime failureTimestamp);
-        IEnumerable<DateTime> Get(string username);
-    }
-
-    public class FailedLoginAttempsInMemoryRepository : IFailedLoginAttemptsRepository
-    {
-        private readonly Dictionary<string, List<DateTime>> _failedAttempts = new Dictionary<string, List<DateTime>>();
-
-        public void Add(string username, DateTime failureTimestamp)
-        {
-            if (!_failedAttempts.TryAdd(username, new List<DateTime> {failureTimestamp}))
-                _failedAttempts[username].Add(failureTimestamp);
-        }
-
-        public IEnumerable<DateTime> Get(string username)
-        {
-            if(!_failedAttempts.TryGetValue(username, out var attempts))
-                attempts = new List<DateTime>();
-            return attempts;
         }
     }
 }

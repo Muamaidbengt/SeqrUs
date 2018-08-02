@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Authentication;
+using Seqrus.Web.Services.Logging;
 
 namespace Seqrus.Web.Helpers
 {
@@ -157,16 +159,18 @@ namespace Seqrus.Web.Helpers
 
         public static void AddAuthentication(IServiceCollection services)
         {
-            services.AddScoped<StaticAuthenticator>();
+            services.AddScoped<BasicAuthenticator>();
+            services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+            services.AddSingleton<IAccountRepository, StaticAccountRepository>();
             services.AddSingleton<IFailedLoginAttemptsRepository, FailedLoginAttempsInMemoryRepository>();
 
             services.AddScoped(provider =>
             {
-                Func<IAuthenticationService> getAuthenticator = provider.GetService<StaticAuthenticator>;
+                Func<IAuthenticationService> getAuthenticator = provider.GetService<BasicAuthenticator>;
 
                 if (!Settings.BrokenAuthenticationAndSessionManagement)
                 {
-                    // Decorate authenticator with anti-brute force mechanism (temporary account locking)
+                    // Decorate authenticator with anti-brute force mechanism (temporary account lockout)
                     var notLockingAuth = getAuthenticator;
                     getAuthenticator = () => new AntiBruteForceAuthenticator(notLockingAuth(), provider.GetRequiredService<IFailedLoginAttemptsRepository>());
                 }

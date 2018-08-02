@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Seqrus.Web.Controllers;
 using Seqrus.Web.Helpers;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Logging;
+using Seqrus.Web.Services.Rendering;
 
 namespace Seqrus.Web
 {

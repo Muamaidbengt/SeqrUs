@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Rendering;
 using Seqrus.Web.ViewModels;
 
 namespace Seqrus.Web.Controllers

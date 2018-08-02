@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
+using Microsoft.AspNetCore.Http;
+using Seqrus.Web.Services.Logging;
 
-namespace Seqrus.Web.Services
+namespace Seqrus.Web.Services.Authentication
 {
     public class LoggingAuthenticator : IAuthenticationService
     {

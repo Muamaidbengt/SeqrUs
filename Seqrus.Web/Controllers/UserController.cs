@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Authentication;
 using Seqrus.Web.ViewModels;
 
 namespace Seqrus.Web.Controllers

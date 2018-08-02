@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Helpers;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Rendering;
 
 namespace Seqrus.Web.Controllers
 {
