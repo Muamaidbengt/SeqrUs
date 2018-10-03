@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Seqrus.Web.Controllers;
 using Seqrus.Web.Helpers;
 using Seqrus.Web.Services;
+using Seqrus.Web.Services.Authentication;
 using Seqrus.Web.Services.Logging;
 using Seqrus.Web.Services.Rendering;
 
@@ -42,6 +42,8 @@ namespace Seqrus.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             ConfigurableCountermeasures.AddAntiforgery(services);
             ConfigurableCountermeasures.AddAuthentication(services);
+
+            DbInitializer.CreateAndSeedDatabase(services.BuildServiceProvider());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -53,9 +55,9 @@ namespace Seqrus.Web
             ConfigurableCountermeasures.ConfigureHttpsRedirection(app, Configuration.GetValue<int>("Bindings:https"));
 
             app.UseStaticFiles();
-            
-            ConfigurableCountermeasures.ConfigureCachingHeaders(app);
 
+            ConfigurableCountermeasures.ConfigureCachingHeaders(app);
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(name: "default", template: "{controller=About}/{action=Index}/{id?}");

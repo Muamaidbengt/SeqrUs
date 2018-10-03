@@ -1,5 +1,11 @@
-﻿@{
+﻿@model Seqrus.Web.Services.Authentication.UserAccount
+@{
     ViewData["Title"] = "Logged in";
 }
 
-<h1>Yay, you are now logged in!</h1>
+<h1>Login successful!</h1>
+<p>Welcome @Model.UserName!</p>
+@if (Model.IsAdmin)
+{
+    <p>You are the administrator!</p>
+}

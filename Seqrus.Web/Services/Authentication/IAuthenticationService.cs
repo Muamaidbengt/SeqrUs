@@ -2,6 +2,7 @@
 {
     public interface IAuthenticationService
     {
-        void Authenticate(string username, string password);
+        UserAccount Authenticate(string username, string password);
+        void ResetPassword(string username, string secretAnswer, string newPassword);
     }
 }
