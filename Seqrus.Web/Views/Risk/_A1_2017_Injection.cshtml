@@ -1,5 +1,5 @@
 ﻿@model Seqrus.Web.Helpers.ComplianceSettings
-<h2 class="page-header">A1:2017 - Injection <risk-exposure /></h2>
+<h2 class="page-header">A1:2017 - Injection <risk-exposure is-exposed="@Model.Injection" /></h2>
 
 <div class="seq-description">
     <p>An injection vulnerability can allow an attacker to gain access to and use a system in unexpected, unintended
@@ -11,4 +11,26 @@
         <p>Injection can result in data loss, corruption, or disclosure to unauthorized parties, loss of accountability, or denial of access. Injection can sometimes lead to complete host takeover.</p>
         <footer><a href="https://www.owasp.org/index.php/Top_10-2017_A1-Injection">The OWASP Top 10 2017 Project</a></footer>
     </blockquote>
+</div>
+
+<div class="seq-test">
+    <div class="panel panel-default">
+        <div class="panel-heading">Attempt to use injection to short-circuit the authentication subsystem</div>
+        <div class="panel-body">
+            <ol>
+                <li>
+                    Attempt to authenticate to the application using a carefully crafted SQL snippet as the account name and/or password.
+                    <ol>
+                        <li>In this application, you can <a asp-controller="User" asp-action="ForgotPassword">request a password reset</a> using the username <code>' or 1=1 or username='</code>).</li>
+                        <li>Depending on the application you're testing, there may be multiple different ways to authenticate.</li>
+                    </ol>
+                </li>
+                <li>Check for clues that the system is vulnerable through error messages. In particular, do you get a different error message and/or behaviour when using a SQL snippet than when authenticating with invalid credentials?</li>
+            </ol>
+            <ul>
+                <li>If <risk-exposure is-exposed="true" />, the system will evaluate the SQL snippets as code, allowing the attacker to alter the authentication logic.</li>
+                <li>If <risk-exposure is-exposed="false" />, the system will not evaluate or execute the SQL snippets. Instead it will treat them just as it would treat any invalid credentials.</li>
+            </ul>
+        </div>
+    </div>
 </div>
