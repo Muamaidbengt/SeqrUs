@@ -2,13 +2,19 @@
 {
     public class UserAccount
     {
-        public string UserName { get; }
-        public string PasswordHash { get; }
+        public string UserName { get; private set; }
+        public string PasswordHash { get; private set; }
+        public bool IsAdmin { get; private set; }
+        public string SecurityAnswer { get; private set; }
 
-        public UserAccount(string userName, string passwordHash)
+        protected UserAccount(){}
+
+        public UserAccount(string userName, string passwordHash, string securityAnswer, bool isAdmin)
         {
             UserName = userName;
             PasswordHash = passwordHash;
+            SecurityAnswer = securityAnswer;
+            IsAdmin = isAdmin;
         }
     }
 }

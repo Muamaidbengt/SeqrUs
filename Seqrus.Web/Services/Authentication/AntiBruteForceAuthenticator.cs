@@ -21,13 +21,28 @@ namespace Seqrus.Web.Services.Authentication
                 ?? throw new ArgumentNullException(nameof(failedLoginAttemptsRepository));
         }
 
-        public void Authenticate(string username, string password)
+        public UserAccount Authenticate(string username, string password)
         {
             if (IsLocked(username))
                 throw new LoginFailedException($"Account is temporarily locked: {username}");
             try
             {
-                _wrappedAuthenticationService.Authenticate(username, password);
+                return _wrappedAuthenticationService.Authenticate(username, password);
+            }
+            catch (Exception)
+            {
+                _failedLoginAttemptsRepository.Add(username, DateTime.Now);
+                throw;
+            }
+        }
+
+        public void ResetPassword(string username, string secretAnswer, string newPassword)
+        {
+            if (IsLocked(username))
+                throw new LoginFailedException($"Account is temporarily locked: {username}");
+            try
+            {
+                _wrappedAuthenticationService.ResetPassword(username, secretAnswer, newPassword);
             }
             catch (Exception)
             {

@@ -18,6 +18,16 @@ namespace Seqrus.Web.Services.Logging
             });
         }
 
+        public void PasswordResetFailed(string username, string sourceIp)
+        {
+            _logEntries.Add(new LogEntry
+            {
+                Category = nameof(PasswordResetFailed),
+                AdditionalInfo = $"User: {username}, Ip: {sourceIp}",
+                Timestamp = DateTime.Now
+            });
+        }
+
         public void ApplicationStarted()
         {
             _logEntries.Add(new LogEntry

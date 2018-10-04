@@ -18,15 +18,28 @@ namespace Seqrus.Web.Services.Authentication
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
-        public void Authenticate(string username, string password)
+        public UserAccount Authenticate(string username, string password)
         {
             try
             {
-                _wrappedService.Authenticate(username, password);
+                return _wrappedService.Authenticate(username, password);
             }
             catch (Exception ex)
             {
                 _loggingService.LoginFailed(ex.Message, _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
+                throw;
+            }
+        }
+
+        public void ResetPassword(string username, string secretAnswer, string newPassword)
+        {
+            try
+            {
+                _wrappedService.ResetPassword(username, secretAnswer, newPassword);
+            }
+            catch (Exception ex)
+            {
+                _loggingService.PasswordResetFailed(ex.Message, _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString());
                 throw;
             }
         }

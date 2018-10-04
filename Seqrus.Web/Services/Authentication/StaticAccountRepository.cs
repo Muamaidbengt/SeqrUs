@@ -14,7 +14,7 @@ namespace Seqrus.Web.Services.Authentication
         {
             _hasher = hasher;
 
-            _knownAccounts.Add("admin", new UserAccount("admin", _hasher.GetHash("passw0rd")));
+            _knownAccounts.Add("admin", new UserAccount("admin", _hasher.GetHash("passw0rd"), "Yokel", true));
         }
 
         private readonly Dictionary<string, UserAccount> _knownAccounts = new Dictionary<string, UserAccount>();
@@ -22,6 +22,11 @@ namespace Seqrus.Web.Services.Authentication
         public bool TryGetAccountByName(string username, out UserAccount userAccount)
         {
             return _knownAccounts.TryGetValue(username, out userAccount);
+        }
+
+        public bool TryUpdatePassword(string username, string secretAnswer, string newPasswordHash)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -11,16 +11,29 @@ namespace Seqrus.Web.Services.Authentication
             _wrappedService = wrappedService;
         }
 
-        public void Authenticate(string username, string password)
+        public UserAccount Authenticate(string username, string password)
         {
             try
             {
-                _wrappedService.Authenticate(username, password);
+                return _wrappedService.Authenticate(username, password);
             }
             catch (Exception)
             {
                 // Do not emit details to the user
                 throw new LoginFailedException("Login failed! ");
+            }
+        }
+
+        public void ResetPassword(string username, string secretAnswer, string newPassword)
+        {
+            try
+            {
+                _wrappedService.ResetPassword(username, secretAnswer, newPassword);
+            }
+            catch (Exception)
+            {
+                // Do not emit details to the user
+                throw new PasswordResetFailedException("Password reset failed! ");
             }
         }
     }

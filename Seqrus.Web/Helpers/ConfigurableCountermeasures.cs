@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using Seqrus.Web.Services;
@@ -161,7 +162,21 @@ namespace Seqrus.Web.Helpers
         {
             services.AddScoped<BasicAuthenticator>();
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
-            services.AddSingleton<IAccountRepository, StaticAccountRepository>();
+
+            services.AddSingleton(new DbContextOptionsBuilder<AccountContext>()
+                .UseSqlite("Data Source=DbAccountRepository.sqlite")
+                .Options);
+            services.AddScoped<AccountContext>();
+
+            if (Settings.Injection)
+            {
+                services.AddScoped<IAccountRepository, UnparametrizedAccountRepository>();
+            }
+            else
+            {
+                services.AddScoped<IAccountRepository, ParametrizedAccountRepository>();
+            }
+            
             services.AddSingleton<IFailedLoginAttemptsRepository, FailedLoginAttempsInMemoryRepository>();
 
             services.AddScoped(provider =>
