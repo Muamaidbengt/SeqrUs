@@ -8,9 +8,10 @@ namespace Seqrus.Web.Services.Authentication
     {
         public static void CreateAndSeedDatabase(IServiceProvider services)
         {
-            var accountDb = services.GetRequiredService<DbAccountRepository>();
+            var accountDb = services.GetRequiredService<AccountContext>();
             var hasher = services.GetRequiredService<IPasswordHasher>();
-
+            
+            accountDb.Database.EnsureDeleted();
             accountDb.Database.EnsureCreated();
 
             if (accountDb.UserAccounts.Any())

@@ -29,7 +29,8 @@ namespace Seqrus.Web.Services.Authentication
         public void ResetPassword(string username, string secretAnswer, string newPassword)
         {
             var hashedPassword = _hasher.GetHash(newPassword);
-            _accountRepository.UpdatePassword(username, secretAnswer, hashedPassword);
+            if (!_accountRepository.TryUpdatePassword(username, secretAnswer, hashedPassword))
+                throw new PasswordResetFailedException("Password reset failed!");
         }
 
         private UserAccount GetUserByName(string username)

@@ -24,7 +24,7 @@ namespace Seqrus.Web.Services.Authentication
             return _knownAccounts.TryGetValue(username, out userAccount);
         }
 
-        public bool UpdatePassword(string username, string secretAnswer, string newPasswordHash)
+        public bool TryUpdatePassword(string username, string secretAnswer, string newPasswordHash)
         {
             throw new System.NotImplementedException();
         }

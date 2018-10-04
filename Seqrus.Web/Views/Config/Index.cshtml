@@ -9,6 +9,13 @@
     <div class="well">
         <form asp-action="Configure">
             <div class="checkbox">
+                <label for="@nameof(Model.Injection)">
+                    <input asp-for="Injection" />
+                    Exposed to risk: A1 - Injection
+                </label>
+            </div>
+
+            <div class="checkbox">
                 <label for="@nameof(Model.BrokenAuthenticationAndSessionManagement)">
                     <input asp-for="BrokenAuthenticationAndSessionManagement" />
                     Exposed to risk: A2 - Broken Authentication and Session Management

@@ -1,10 +1,11 @@
 ﻿{
   "ComplianceSettings": {
+    "Injection": true, 
     "SecurityMisconfiguration": true,
     "CrossSiteScripting": true,
     "SensitiveDataExposure": true,
     "InsufficientLoggingAndMonitoring": true,
     "CrossSiteRequestForgery": true,
-    "BrokenAuthenticationAndSessionManagement": true 
+    "BrokenAuthenticationAndSessionManagement": true
   }
 }

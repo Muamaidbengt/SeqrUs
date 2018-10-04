@@ -4,6 +4,6 @@
     {
         bool TryGetAccountByName(string username, out UserAccount userAccount);
 
-        bool UpdatePassword(string username, string secretAnswer, string newPasswordHash);
+        bool TryUpdatePassword(string username, string secretAnswer, string newPasswordHash);
     }
 }

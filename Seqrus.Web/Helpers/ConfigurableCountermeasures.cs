@@ -162,14 +162,21 @@ namespace Seqrus.Web.Helpers
         {
             services.AddScoped<BasicAuthenticator>();
             services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
-            //services.AddSingleton<IAccountRepository, StaticAccountRepository>();
 
-
-            services.AddSingleton(new DbContextOptionsBuilder<DbAccountRepository>()
+            services.AddSingleton(new DbContextOptionsBuilder<AccountContext>()
                 .UseSqlite("Data Source=DbAccountRepository.sqlite")
                 .Options);
-            services.AddScoped<DbAccountRepository>();
-            services.AddScoped<IAccountRepository, DbAccountRepository>();
+            services.AddScoped<AccountContext>();
+
+            if (Settings.Injection)
+            {
+                services.AddScoped<IAccountRepository, UnparametrizedAccountRepository>();
+            }
+            else
+            {
+                services.AddScoped<IAccountRepository, ParametrizedAccountRepository>();
+            }
+            
             services.AddSingleton<IFailedLoginAttemptsRepository, FailedLoginAttempsInMemoryRepository>();
 
             services.AddScoped(provider =>
