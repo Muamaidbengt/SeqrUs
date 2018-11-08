@@ -12,6 +12,7 @@ using Seqrus.Web.Services;
 using Seqrus.Web.Services.Authentication;
 using Seqrus.Web.Services.Logging;
 
+#pragma warning disable S125 // Sections of code should not be commented out
 namespace Seqrus.Web.Helpers
 {
     public static class ConfigurableCountermeasures
@@ -34,7 +35,7 @@ namespace Seqrus.Web.Helpers
                 //
                 // e.g.
                 // WebHostBuilder.UseStartup<Startup>()
-                // .UseKestrel(options => options.AddServerHeader = false)
+                // .UseKestrel(options => options.AddServerHeader = false);
                 //
                 // or if using IIS and its RequestFiltering module, by altering the web.config:
                 // <configuration>
@@ -72,7 +73,7 @@ namespace Seqrus.Web.Helpers
             });
 
             // With ASP.NET Core 2.1 or greater you can instead do
-            //app.UseHsts()
+            //app.UseHsts();
         }
 
         public static void ConfigureHttpsRedirection(IApplicationBuilder app, int? port)
@@ -209,3 +210,4 @@ namespace Seqrus.Web.Helpers
         }
     }
 }
+#pragma warning restore S125 // Sections of code should not be commented out
